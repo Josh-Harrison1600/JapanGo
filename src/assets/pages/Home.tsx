@@ -1,7 +1,7 @@
 
 function Home(){
     return(
-        <h1 className="text-blue-500 text-3xl">HOME</h1>
+        <h1 className="text-black text-3xl">HOME</h1>
     )
 } 
 
