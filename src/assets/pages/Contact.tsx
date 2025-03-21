@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -11,6 +11,12 @@ function Contact(){
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
+    //States for the form fields
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [message, setMessage] = useState('');
+
+    //Function for the submit button that also handles the MUI modal (handleOpen)
     const formRef = useRef<HTMLFormElement | null>(null);
     const sendEmailPLACEHOLDER = (e: React.FormEvent) => {
         e.preventDefault();
@@ -36,6 +42,24 @@ function Contact(){
         boxShadow: 24,
         p: 4,
       };
+
+    //Load saved data when the component mounts
+    useEffect(() => {
+        const savedName = localStorage.getItem('contactName');
+        const savedEmail = localStorage.getItem('contactEmail');
+        const savedMessage = localStorage.getItem('contactMessage'); 
+
+        if(savedName) setName(savedName);
+        if(savedEmail) setEmail(savedEmail);
+        if(savedMessage) setMessage(savedMessage);
+    }, []);
+
+    //Save to local storage when form changes
+    useEffect(() => {
+        localStorage.setItem('contactName', name);
+        localStorage.setItem('contactEmail', email);
+        localStorage.setItem('contactMessage', message);
+    }, [name, email, message]);
 
     return(
         <>
@@ -69,6 +93,8 @@ function Contact(){
                             name="user_name"
                             required
                             placeholder="Enter Your Name"
+                            onChange={(e) => setName(e.target.value)}
+                            value={name}
                             className='mt-1 block w-full px-3 py-2 border border-black focus:outline-none focus:bg-gray-100 duration-300 transition-all'
                         />
                     </div>
@@ -87,6 +113,8 @@ function Contact(){
                             name="user_email"
                             required
                             placeholder="Enter Your Email"
+                            onChange={(e) => setEmail(e.target.value)}
+                            value={email}
                             className='mt-1 block w-full px-3 py-2 border border-black focus:outline-none focus:bg-gray-100 duration-300 transition-all'
                         />
                     </div>
@@ -105,6 +133,8 @@ function Contact(){
                             rows={4}
                             required
                             placeholder="Enter Your Message"
+                            onChange={(e) => setMessage(e.target.value)}
+                            value={message}
                             className='mt-1 block w-full px-3 py-2 border border-black focus:outline-none focus:bg-gray-100 duration-300 transition-all'
                         />
                     </div>
