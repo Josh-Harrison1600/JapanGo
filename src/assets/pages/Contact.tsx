@@ -22,6 +22,13 @@ function Contact(){
         e.preventDefault();
         console.log('sendEmailPLACEHOLDER');
         handleOpen();
+        //clear the form after submission
+        setName('');
+        setEmail('');
+        setMessage('');
+        localStorage.removeItem('contactName');
+        localStorage.removeItem('contactEmail');
+        localStorage.removeItem('contactMessage');
     }
 
     //Animation variants for the fade-up effect
@@ -141,7 +148,7 @@ function Contact(){
 
                     {/* Submit Button */}
                     <div className="flex justify-center">
-                        <button type="submit" className="relative group px-14 py-4 block border border-black bg-white text-black font-semibold overflow-hidden mb-24">
+                        <button type="submit" className="relative group px-14 py-4 block border border-black bg-white text-black font-semibold overflow-hidden mb-24 transform transition-transform duration-300 hover:-translate-y-2">
                             <span className="relative z-10">Submit</span>
                             {/* Red circle effect */}
                             <span className="absolute inset-0 flex justify-center items-center">
