@@ -36,7 +36,7 @@ function NavBar() {
             
             {/* Navigations for Home, Menu, & Contact */}
             <div
-                className={`flex-col md:flex md:flex-row md:items-center md:space-x-4 absolute md:static top-16 left-0 w-full md:w-auto bg-[#010b1c] md:bg-transparent 
+                className={`flex-col md:flex md:flex-row md:items-center md:space-x-4 absolute md:static top-16 left-0 w-full md:w-auto bg-[#010b1c] md:bg-transparent
                 ${menuOpen ? "flex" : "hidden"
                 }`}
             >
