@@ -12,9 +12,21 @@ function DashboardPage() {
     setMenuItems(res.data);
   }
 
+    //function to delete menu item
+    const handleDelete = async (id: string) => {
+      try {
+          await axios.delete(`http://localhost:5000/menu-items/${id}`);
+          await fetchItems();
+      } catch(err) {
+          console.error('Error deleting item', err);
+      }
+  };
+
   useEffect(() => {
     fetchItems();
   }, []);
+
+  
 
   
   return (
@@ -22,7 +34,7 @@ function DashboardPage() {
       <AdminNavBar />
       <div className="p-6">
         <AddMenuItem refreshItems={fetchItems} />
-        <MenuList items={menuItems} />
+        <MenuList items={menuItems} onDelete={handleDelete} />
       </div>
     </div>
   );

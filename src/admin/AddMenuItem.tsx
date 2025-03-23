@@ -11,6 +11,7 @@ function AddMenuItem({ refreshItems }: AddMenuItemProps) {
   const [price, setPrice] = useState('');
   const [description, setDescription] = useState('');
   const [imageUrl, setImageUrl] = useState('');
+  const [message, setMessage] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -24,6 +25,9 @@ function AddMenuItem({ refreshItems }: AddMenuItemProps) {
         imageUrl,
       });
 
+      setMessage('Item added successfully!');
+      setTimeout(() => setMessage(''), 2000);
+
       // Clear form
       setName('');
       setCategory('');
@@ -34,6 +38,7 @@ function AddMenuItem({ refreshItems }: AddMenuItemProps) {
       // Refresh menu list
       refreshItems();
     } catch (err) {
+      setMessage('Error adding item');
       console.error('Error adding item', err);
     }
   };
@@ -85,7 +90,14 @@ function AddMenuItem({ refreshItems }: AddMenuItemProps) {
       />
 
       <button type="submit" className="bg-black hover:bg-gray-700 transition-all duration-300 text-white px-4 py-2 cursor-pointer">Add Item</button>
+      
+      {message && (
+      <p className="text-green-600">{message}</p>
+    )}
+
     </form>
+
+
   );
 }
 
