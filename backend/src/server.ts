@@ -18,7 +18,7 @@ mongoose.connect(process.env.MONGO_URI as string)
   .catch((err) => console.log(err));
 
 // Routes
-app.use('/api/menu-items', routes);
+app.use('/menu-items', routes);
 
 // Base route
 app.get('/', (req, res) => {
