@@ -24,8 +24,8 @@ function MenuList() {
                             <td>{item.category}</td>
                             <td>{item.price}</td>
                             <td>
-                                <button className="bg-blue-500 text-white px-2 mx-2">Edit</button>
-                                <button className="bg-red-500 text-white px-2">Delete</button>
+                                <button className="bg-blue-500 hover:bg-blue-800 text-white px-2 mx-2">Edit</button>
+                                <button className="bg-red-500 hover:bg-red-800 text-white px-2">Delete</button>
                             </td>
                         </tr>
                         ))}
