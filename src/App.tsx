@@ -5,6 +5,8 @@ import Footer from "./assets/components/Footer"
 import Home from "./assets/pages/Home";
 import Menu from "./assets/pages/Menu";
 import Contact from "./assets/pages/Contact";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 // Admin imports
 import { AuthProvider } from './contexts/AuthContext';
@@ -21,6 +23,7 @@ function LayoutWrapper(){
 
   return(
     <>
+      {/* if the current path is not /admin, render the NavBar and Footer */}
       {!isAdminRoute && <NavBar />}
       <Routes>
         <Route path="/" element={<Home />} />
@@ -38,7 +41,7 @@ function LayoutWrapper(){
           }
         />
       </Routes>
-
+      <ToastContainer position="top-right" autoClose={3000} />
       {!isAdminRoute && <Footer />}
     </>
   );

@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 interface AddMenuItemProps {
   refreshItems: () => void;
@@ -25,8 +27,8 @@ function AddMenuItem({ refreshItems }: AddMenuItemProps) {
         imageUrl,
       });
 
-      setMessage('Item added successfully!');
-      setTimeout(() => setMessage(''), 2000);
+      toast.success('Item Added Successfully!');
+
 
       // Clear form
       setName('');
