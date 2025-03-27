@@ -2,26 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import {
-  Box,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Checkbox,
-  IconButton,
-  Toolbar,
-  Typography,
-  Tooltip,
-  TablePagination,
-  Button,
-  Modal,
-  TextField,
-  TableSortLabel
-} from '@mui/material';
+import { Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Checkbox, IconButton, Toolbar, Typography, Tooltip,TablePagination, Button, Modal, TextField, TableSortLabel } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 
@@ -183,6 +164,16 @@ function MenuList({ items, onDelete, refreshItems }: { items: any[]; onDelete: (
               </TableSortLabel>
             </TableCell>
 
+            <TableCell>
+              <TableSortLabel
+                active={orderBy === 'imageUrl'}
+                direction={orderDirection}
+                onClick={() => handleRequestSort('imageUrl')}
+              >
+                Image Url
+              </TableSortLabel>
+            </TableCell>
+
             <TableCell align="center">Actions</TableCell>
           </TableRow>
         </TableHead>
@@ -209,6 +200,7 @@ function MenuList({ items, onDelete, refreshItems }: { items: any[]; onDelete: (
                     <TableCell>{row.category}</TableCell>
                     <TableCell>{row.price}</TableCell>
                     <TableCell>{row.description}</TableCell>
+                    <TableCell>{row.imageUrl}</TableCell>
                     <TableCell align="center">
                       <IconButton onClick={() => setDeleteTarget({ id: row._id, name: row.name })}>
                         <DeleteIcon color="error" />

@@ -1,4 +1,4 @@
-const categories = ["Apps", "Mains", "Sushi"];
+const categories = ["Appetizer", "A La Carte", "Hot Dish & Noodles", "Lunch", "Party Trays", "Roll Boat Tray", "Rolls", "Salad", "Soup", "Special Rolls", "Sushi, Sashimi & Roll", "Tempura", "Vegetarian"];
 
 function MenuCategoryNav() {
     return(

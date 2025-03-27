@@ -1,5 +1,28 @@
 
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+
+interface HoursType {
+    [day: string]: string;
+}
+
 function Footer(){
+    const [hours, setHours] = useState<HoursType | null>(null);
+    const daysOfWeek = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+
+    //Get the hours from the API
+    useEffect(() => {
+        const fetchHours = async () => {
+            try{
+                const res = await axios.get('http://localhost:5000/hours');
+                setHours(res.data);
+            }catch(err){
+                console.error("Failed to fetch hours", err);
+            }
+        }
+        fetchHours();
+    }, []);
+
     return(
         <footer className="bg-[#010b1c] text-white p-8 text-center">
             <div className="flex flex-col md:flex-row justify-center md:justify-between items-center md:items-center space-y-6 md:space-y-0 md:space-x-8 md:text-left">
@@ -12,9 +35,15 @@ function Footer(){
                 <div>
                     <h3 className="font-bold mb-2 text-2xl">Hours</h3>
                         <div className=" text-xl">
-                            <p>Monday – Thursday | 11:30 a.m. – 10 p.m.</p>
-                            <p>Friday – Saturday | 11:30 a.m. – 10:30 p.m.</p>
-                            <p>Sunday | 12:00 a.m.– 9:30p.m.</p>
+                            {hours ? (
+                                daysOfWeek.map((day) => (
+                                    <p key={day}>
+                                        {day.charAt(0).toUpperCase() + day.slice(1)} | {hours[day]}
+                                    </p>
+                                ))
+                            ) : (
+                                <p>Loading...</p>
+                            )}
                         </div>
                 </div>
                 <div>

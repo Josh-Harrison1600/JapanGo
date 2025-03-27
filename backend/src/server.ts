@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import routes from './routes/menuRoutes';
+import hoursRoute from './routes/hoursRoute';
 
 dotenv.config();
 
@@ -19,6 +20,7 @@ mongoose.connect(process.env.MONGO_URI as string)
 
 // Routes
 app.use('/menu-items', routes);
+app.use('/hours', hoursRoute);
 
 // Base route
 app.get('/', (req, res) => {

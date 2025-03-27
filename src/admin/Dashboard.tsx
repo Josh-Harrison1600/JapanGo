@@ -1,6 +1,7 @@
 import AdminNavBar from '../assets/components/AdminNavBar';
 import MenuList from './MenuList';
 import AddMenuItem from './AddMenuItem';
+import EditHours from './EditHours';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
@@ -39,6 +40,7 @@ function DashboardPage() {
       <div className="p-6">
         <AddMenuItem refreshItems={fetchItems} />
         <MenuList items={menuItems} onDelete={handleDelete} refreshItems={fetchItems}/>
+        <EditHours />
       </div>
     </div>
   );
