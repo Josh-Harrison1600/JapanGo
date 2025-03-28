@@ -29,12 +29,12 @@ function Footer(){
 
                 {/* Address, Hours, & Phone Number */}
                 <div>
-                    <h3 className="font-bold mb-2 text-2xl">Address</h3>
-                        <p className="text-xl">687 Main St, Moncton, NB E1C 1E3</p>
+                    <h3 className="font-bold mb-2 text-2xl text-center">Address</h3>
+                        <p className="text-xl text-center">687 Main St, Moncton, NB E1C 1E3</p>
                 </div>
                 <div>
-                    <h3 className="font-bold mb-2 text-2xl">Hours</h3>
-                        <div className=" text-xl">
+                    <h3 className="font-bold mb-2 text-2xl text-center">Hours</h3>
+                        <div className=" text-xl text-center">
                             {hours ? (
                                 daysOfWeek.map((day) => (
                                     <p key={day}>
@@ -47,8 +47,8 @@ function Footer(){
                         </div>
                 </div>
                 <div>
-                    <h3 className="font-bold mb-2 text-2xl">Phone</h3>
-                        <p className="text-xl">1+(506) 854-3600</p>
+                    <h3 className="font-bold mb-2 text-2xl text-center">Phone</h3>
+                        <p className="text-xl text-center">1+(506) 854-3600</p>
                 </div>
 
                 {/* Google Maps */}

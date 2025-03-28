@@ -1,7 +1,8 @@
-import AdminNavBar from '../assets/components/AdminNavBar';
-import MenuList from './MenuList';
-import AddMenuItem from './AddMenuItem';
-import EditHours from './EditHours';
+import AdminNavBar from '../../assets/components/AdminNavBar';
+import MenuList from '../components/MenuList';
+import AddMenuItem from '../components/AddMenuItem';
+import EditHours from '../components/EditHours';
+import ImageUploader from '../components/ImageUploader';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
@@ -41,6 +42,9 @@ function DashboardPage() {
         <AddMenuItem refreshItems={fetchItems} />
         <MenuList items={menuItems} onDelete={handleDelete} refreshItems={fetchItems}/>
         <EditHours />
+        <ImageUploader onUploadComplete={(url) => {
+          console.log('Image uploaded to:', url);
+        }} />
       </div>
     </div>
   );

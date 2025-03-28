@@ -106,7 +106,15 @@ function MenuList({ items, onDelete, refreshItems }: { items: any[]; onDelete: (
               <IconButton onClick={() => {
                 const target = items.find((item) => item._id === selected[0]);
                 if (target) setDeleteTarget({ id: target._id, name: target.name });
-              }}>
+              }}
+                sx={{
+                  color: 'gray',
+                  '&:hover': {
+                    color: 'red',
+                  },
+                }}
+              >
+            
                 <DeleteIcon />
               </IconButton>
             </Tooltip>
@@ -202,9 +210,6 @@ function MenuList({ items, onDelete, refreshItems }: { items: any[]; onDelete: (
                     <TableCell>{row.description}</TableCell>
                     <TableCell>{row.imageUrl}</TableCell>
                     <TableCell align="center">
-                      <IconButton onClick={() => setDeleteTarget({ id: row._id, name: row.name })}>
-                        <DeleteIcon color="error" />
-                      </IconButton>
                       <IconButton onClick={() => openEditModal(row)}>
                         <EditIcon color="primary" />
                       </IconButton>

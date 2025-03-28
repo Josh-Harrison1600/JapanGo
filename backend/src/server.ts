@@ -1,11 +1,13 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
 import express from 'express';
 import mongoose from 'mongoose';
-import dotenv from 'dotenv';
 import cors from 'cors';
 import routes from './routes/menuRoutes';
 import hoursRoute from './routes/hoursRoute';
+import uploadRoute from './routes/uploadRoute';
 
-dotenv.config();
 
 const app = express();
 
@@ -21,6 +23,7 @@ mongoose.connect(process.env.MONGO_URI as string)
 // Routes
 app.use('/menu-items', routes);
 app.use('/hours', hoursRoute);
+app.use('/upload-image', uploadRoute);
 
 // Base route
 app.get('/', (req, res) => {

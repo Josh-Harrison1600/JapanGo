@@ -58,14 +58,31 @@ function AddMenuItem({ refreshItems }: AddMenuItemProps) {
         required
       />
 
-      <input
-        type="text"
-        placeholder="Category"
-        className="border px-3 py-2 w-full"
+      <select
         value={category}
+        className="border px-3 py-2 w-full"
         onChange={(e) => setCategory(e.target.value)}
         required
-      />
+      >
+        <option value="" disabled>Select Category</option>
+        {[
+          "Appetizer",
+          "A La Carte",
+          "Hot Dishes & Noodles",
+          "Lunch",
+          "Rolls",
+          "Special Rolls",
+          "Sushi, Sashimi & Roll",
+          "Salad",
+          "Soup",
+          "Vegetarian",
+          "Tempura"
+        ].map((cat) => (
+          <option key={cat} value={cat}>
+            {cat}
+          </option>
+        ))}
+      </select>
 
       <input
         type="number"
@@ -89,6 +106,7 @@ function AddMenuItem({ refreshItems }: AddMenuItemProps) {
         className="border px-3 py-2 w-full"
         value={imageUrl}
         onChange={(e) => setImageUrl(e.target.value)}
+        
       />
 
       <button type="submit" className="bg-black hover:bg-gray-700 transition-all duration-300 text-white px-4 py-2 cursor-pointer">Add Item</button>

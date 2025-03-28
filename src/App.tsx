@@ -10,9 +10,9 @@ import 'react-toastify/dist/ReactToastify.css';
 
 // Admin imports
 import { AuthProvider } from './contexts/AuthContext';
-import ProtectedRoute from './admin/ProtectedRoute';
-import LoginPage from './admin/Login';
-import DashboardPage from './admin/Dashboard';
+import ProtectedRoute from './admin/components/ProtectedRoute';
+import LoginPage from './admin/pages/Login';
+import DashboardPage from './admin/pages/Dashboard';
 
 //Wrapper component that will handle conditional rendering
 function LayoutWrapper(){
