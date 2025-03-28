@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 
 interface ImageUploaderProps{
@@ -9,6 +9,17 @@ function ImageUploader({ onUploadComplete }: ImageUploaderProps){
     //States for if the image is being uploaded & for the image preview URL
     const [uploading, setUploading] = useState(false);
     const [preview, setPreview] = useState<string | null>(null);
+
+    //State for the imageUrl log
+    const [uploadLog, setUploadLog] = useState<{ originalName: String, cloudfrontUrl: string }[]>([]); 
+
+
+    //Fetch the logs
+    useEffect(() => {
+      axios.get('http://localhost:5000/upload-image/log')
+      .then(res => setUploadLog(res.data))
+      .catch(err => console.error("failed to get logs", err));
+    }, [])
 
   /**
    * Triggered when the user selects a file.
@@ -70,6 +81,24 @@ function ImageUploader({ onUploadComplete }: ImageUploaderProps){
               </p>
             </div>
           )}
+
+          {/* Upload Log */}
+          {uploadLog.length > 0 && (
+            <div className='mt-4'>
+              <h4 className='font-semibold mb-2'>Upload History</h4>
+              <ul className='space-y-1 text-sm'>
+                {uploadLog.map((item, index) => (
+                  <li key={index} className='bg-gray-100 p-2 rounded border'>
+                    <strong>{item.originalName}</strong><br />
+                    <a href={item.cloudfrontUrl} target="_blank" rel="noopener noreferrer" className='text-blue-600 underline'>
+                      {item.cloudfrontUrl}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
         </div>
       );
       

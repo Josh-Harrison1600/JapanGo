@@ -2,6 +2,7 @@ import express from 'express';
 import multer from 'multer';
 import AWS from 'aws-sdk';
 import { v4 as uuidv4 } from 'uuid';
+import UploadedImage from '../models/UploadedImage';
 
 const router = express.Router();
 
@@ -58,11 +59,29 @@ router.post('/', upload.single('image'), async (req, res) => {
 
         //Construct the public URL
         const imageUrl = `${cloudfrontDomain}/images/${filename}`;
+
+        //Save the info to MongoDB
+        await UploadedImage.create({
+            originalName: file.originalname,
+            cloudfrontUrl: imageUrl
+        })
+
         res.json({ imageUrl })
     }catch(err){
         console.error("Failed to upload", err);
         res.status(500).json({ error: 'Image upload failed'});
     }
 });
+
+//GET for the log of imageUrl info
+router.get('/log', async (req, res) => {
+    try{
+        const logs = await UploadedImage.find().sort({ uploadedAt: -1 });
+        res.json(logs);
+    }catch(err){
+        console.error('Failed to fetch image logs', err);
+        res.status(500).json({ error: 'Failed to fetch image logs' });
+    }
+})
 
 export default router;

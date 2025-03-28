@@ -2,9 +2,25 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Checkbox, IconButton, Toolbar, Typography, Tooltip,TablePagination, Button, Modal, TextField, TableSortLabel } from '@mui/material';
+import { Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Checkbox, IconButton, Toolbar, Typography, Tooltip,TablePagination, Button, Modal, TextField, TableSortLabel, MenuItem } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+
+//Categories for edit modal
+const categories = [
+  "Appetizer",
+  "A La Carte",
+  "Hot Dishes & Noodles",
+  "Lunch",
+  "Rolls",
+  "Special Rolls",
+  "Sushi, Sashimi & Roll",
+  "Salad",
+  "Soup",
+  "Vegetarian",
+  "Tempura"
+];
+
 
 function MenuList({ items, onDelete, refreshItems }: { items: any[]; onDelete: (id: string) => void; refreshItems: () => void }) {
   const [deleteTarget, setDeleteTarget] = useState<{ id: string, name: string } | null>(null);
@@ -264,7 +280,15 @@ function MenuList({ items, onDelete, refreshItems }: { items: any[]; onDelete: (
         <Box sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', bgcolor: 'background.paper', p: 4, boxShadow: 24, width: 400 }}>
           <Typography variant="h6">Edit Item</Typography>
           <TextField fullWidth variant="outlined" margin="dense" label="Name" name="name" value={editForm.name} onChange={handleEditChange} />
-          <TextField fullWidth variant="outlined" margin="dense" label="Category" name="category" value={editForm.category} onChange={handleEditChange} />
+          <TextField select fullWidth variant="outlined" margin="dense" label="Category" name="category" value={editForm.category} onChange={handleEditChange} 
+          >
+            {/* Loop through all cat items */}
+            {categories.map((cat) => (
+              <MenuItem key={cat} value={cat}>
+                {cat}
+              </MenuItem>
+            ))} 
+          </TextField>
           <TextField fullWidth variant="outlined" margin="dense" label="Price" name="price" type="number" value={editForm.price} onChange={handleEditChange} />
           <TextField fullWidth variant="outlined" margin="dense" label="Description" name="description" value={editForm.description} onChange={handleEditChange} />
           <TextField fullWidth variant="outlined" margin="dense" label="Image URL" name="imageUrl" value={editForm.imageUrl} onChange={handleEditChange} />
