@@ -26,7 +26,7 @@ function MenuList({ items, onDelete, refreshItems }: { items: any[]; onDelete: (
   const [deleteTarget, setDeleteTarget] = useState<{ id: string, name: string } | null>(null);
   const [confirmName, setConfirmName] = useState('');
   const [editTarget, setEditTarget] = useState<any | null>(null);
-  const [editForm, setEditForm] = useState({ name: '', category: '', price: '', description: '', imageUrl: '' });
+  const [editForm, setEditForm] = useState({ name: '', category: [] as string[], price: '', description: '', imageUrl: '' });
   const [selected, setSelected] = useState<string[]>([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -38,7 +38,7 @@ function MenuList({ items, onDelete, refreshItems }: { items: any[]; onDelete: (
     setEditTarget(item);
     setEditForm({
       name: item.name,
-      category: item.category,
+      category: Array.isArray(item.category) ? item.category : [item.category],
       price: item.price,
       description: item.description || '',
       imageUrl: item.imageUrl || '',
@@ -280,7 +280,15 @@ function MenuList({ items, onDelete, refreshItems }: { items: any[]; onDelete: (
         <Box sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', bgcolor: 'background.paper', p: 4, boxShadow: 24, width: 400 }}>
           <Typography variant="h6">Edit Item</Typography>
           <TextField fullWidth variant="outlined" margin="dense" label="Name" name="name" value={editForm.name} onChange={handleEditChange} />
-          <TextField select fullWidth variant="outlined" margin="dense" label="Category" name="category" value={editForm.category} onChange={handleEditChange} 
+          <TextField select fullWidth variant="outlined" margin="dense" label="Category" name="category" value={editForm.category} onChange={(e) => {
+            const selected = typeof e.target.value === 'string' ? e.target.value.split(',') : e.target.value;
+            setEditForm({ ...editForm, category: selected});
+          }}
+            slotProps={{
+              select: {
+                multiple: true,
+              }
+            }}
           >
             {/* Loop through all cat items */}
             {categories.map((cat) => (

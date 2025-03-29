@@ -73,7 +73,7 @@ function Menu(){
                                     <p className="text-lg font-semibold">{item.name}</p>
 
                                     {/* Price */}
-                                    <p className="text-sm font-normal italic">${item.price.toFixed(2)}</p>
+                                    <p className="text-sm font-semibold">${item.price.toFixed(2)}</p>
 
                                     {/* Description */}
                                     {item.description && (

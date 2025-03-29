@@ -2,6 +2,8 @@ import { useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Select from 'react-select';
+
 
 interface AddMenuItemProps {
   refreshItems: () => void;
@@ -9,11 +11,27 @@ interface AddMenuItemProps {
 
 function AddMenuItem({ refreshItems }: AddMenuItemProps) {
   const [name, setName] = useState('');
-  const [category, setCategory] = useState('');
+  const [category, setCategory] = useState<string[]>([]);
   const [price, setPrice] = useState('');
   const [description, setDescription] = useState('');
   const [imageUrl, setImageUrl] = useState('');
   const [message, setMessage] = useState('');
+
+  //Category options for the dropdown menu
+  const categoryOptions = [
+    { value: "Appetizer", label: "Appetizer" },
+    { value: "A La Carte", label: "A La Carte" },
+    { value: "Hot Dishes & Noodles", label: "Hot Dishes & Noodles" },
+    { value: "Lunch", label: "Lunch" },
+    { value: "Rolls", label: "Rolls" },
+    { value: "Special Rolls", label: "Special Rolls" },
+    { value: "Sushi, Sashimi & Roll", label: "Sushi, Sashimi & Roll" },
+    { value: "Salad", label: "Salad" },
+    { value: "Soup", label: "Soup" },
+    { value: "Vegetarian", label: "Vegetarian" },
+    { value: "Tempura", label: "Tempura" },
+  ];
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -32,7 +50,7 @@ function AddMenuItem({ refreshItems }: AddMenuItemProps) {
 
       // Clear form
       setName('');
-      setCategory('');
+      setCategory([]);
       setPrice('');
       setDescription('');
       setImageUrl('');
@@ -58,31 +76,18 @@ function AddMenuItem({ refreshItems }: AddMenuItemProps) {
         required
       />
 
-      <select
-        value={category}
-        className="border px-3 py-2 w-full"
-        onChange={(e) => setCategory(e.target.value)}
+      <Select
+        isMulti
+        options={categoryOptions}
+        value={categoryOptions.filter(opt => category.includes(opt.value))}
+        onChange={(selectedOptions) =>
+          setCategory((selectedOptions as { value: string; label: string }[]).map(opt => opt.value))
+        }
+        placeholder="Select Category"
+        classNamePrefix="select"
+        className="w-full"
         required
-      >
-        <option value="" disabled>Select Category</option>
-        {[
-          "Appetizer",
-          "A La Carte",
-          "Hot Dishes & Noodles",
-          "Lunch",
-          "Rolls",
-          "Special Rolls",
-          "Sushi, Sashimi & Roll",
-          "Salad",
-          "Soup",
-          "Vegetarian",
-          "Tempura"
-        ].map((cat) => (
-          <option key={cat} value={cat}>
-            {cat}
-          </option>
-        ))}
-      </select>
+      />
 
       <input
         type="number"

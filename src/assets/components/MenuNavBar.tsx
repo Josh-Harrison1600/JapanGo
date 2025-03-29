@@ -4,8 +4,8 @@ import { motion, AnimatePresence } from "framer-motion";
 const categoryTree = {
     Starters: ["Appetizer", "A La Carte"],
     Mains: ["Hot Dishes & Noodles", "Lunch"],
-    Sushi: ["Rolls", "Special Rolls", "Sushi, Sashimi & Roll"],
-    Others: ["Salad", "Soup", "Vegetarian", "Tempura"], 
+    Sushi: ["Rolls", "Special Rolls", "Sushi, Sashimi & Roll", "Roll Boat Tray"],
+    Others: ["Drink", "Salad", "Soup", "Vegetarian", "Tempura"], 
 };
 
 
