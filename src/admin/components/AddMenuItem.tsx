@@ -84,10 +84,28 @@ function AddMenuItem({ refreshItems }: AddMenuItemProps) {
           setCategory((selectedOptions as { value: string; label: string }[]).map(opt => opt.value))
         }
         placeholder="Select Category"
-        classNamePrefix="select"
         className="w-full"
-        required
+        classNamePrefix="select"
+        closeMenuOnSelect={false}
+        styles={{
+          control: (base) => ({
+            ...base,
+            border: '1px solid #000000',
+            borderRadius: 0,
+            backgroundColor: '#f3f4f6', 
+            minHeight: '40px',
+            boxShadow: 'none',
+            '&:hover': {
+              borderColor: '#000000',
+            },
+            borderColor: '#000000',
+          }),
+          menu: (base) => ({
+            ...base,
+          }),
+        }}
       />
+
 
       <input
         type="number"
