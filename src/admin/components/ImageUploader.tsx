@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
+import { Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, TablePagination } from '@mui/material';
 
 interface ImageUploaderProps{
     onUploadComplete: (url: string) => void;
@@ -10,6 +10,10 @@ function ImageUploader({ onUploadComplete }: ImageUploaderProps){
     //States for if the image is being uploaded & for the image preview URL
     const [uploading, setUploading] = useState(false);
     const [preview, setPreview] = useState<string | null>(null);
+    
+    //States for the page control
+    const [rowsPerPage, setRowsPerPage] = useState(5);
+    const [page, setPage] = useState(0);
 
     //State for the imageUrl log
     const [uploadLog, setUploadLog] = useState<{ originalName: string, cloudfrontUrl: string }[]>([]); 
@@ -21,6 +25,16 @@ function ImageUploader({ onUploadComplete }: ImageUploaderProps){
       .then(res => setUploadLog(res.data))
       .catch(err => console.error("failed to get logs", err));
     }, [])
+  
+    //Function for handling the amount of rows before you can change
+    const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+      setRowsPerPage(parseInt(event.target.value, 10));
+      setPage(0);
+    };
+
+    const handleChangePage = (_event: unknown, newPage: number) => {
+      setPage(newPage);
+    };
 
   /**
    * Triggered when the user selects a file.
@@ -52,9 +66,9 @@ function ImageUploader({ onUploadComplete }: ImageUploaderProps){
     };
 
     return (
-        <div className="mt-12 p-4 rounded-md shadow-md bg-white border max-w-full">
+        <Paper sx={{width: '100%', p: 2, mt: 6, mb: 4}}>
           <h3 className="text-lg font-semibold mb-2">Upload Image</h3>
-      
+  
           {/* Styled file input */}
           <label className="inline-block bg-black text-white px-4 py-2 rounded cursor-pointer hover:bg-gray-800 transition duration-200">
             Select Image
@@ -98,7 +112,9 @@ function ImageUploader({ onUploadComplete }: ImageUploaderProps){
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {uploadLog.map((item, index) => (
+                    {uploadLog
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((item, index) => (
                       <TableRow key={index}>
                         <TableCell>{item.originalName}</TableCell>
                         <TableCell>
@@ -118,10 +134,20 @@ function ImageUploader({ onUploadComplete }: ImageUploaderProps){
                   </TableBody>
                 </Table>
               </TableContainer>
+              <TablePagination
+                rowsPerPageOptions={[5, 10, 25]}
+                component="div"
+                count={uploadLog.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+              />
             </Box>
           )}
-        </div>
+        </Paper>
       );
+      
 }
 
 export default ImageUploader;
