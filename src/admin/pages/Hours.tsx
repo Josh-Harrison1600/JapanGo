@@ -8,7 +8,7 @@ interface HoursType {
 }
 
 // Function to edit the hours
-const EditHours = () => {
+const Hours = () => {
     const [hours, setHours] = useState<HoursType | null>(null);
     const [loading, setLoading] = useState(true);
 
@@ -72,4 +72,4 @@ const EditHours = () => {
     )
 }
 
-export default EditHours;
+export default Hours;

@@ -13,6 +13,9 @@ import { AuthProvider } from './contexts/AuthContext';
 import ProtectedRoute from './admin/components/ProtectedRoute';
 import LoginPage from './admin/pages/Login';
 import DashboardPage from './admin/pages/Dashboard';
+import MenuAdminPage from './admin/pages/MenuAdminPage';
+import AdminLayout from './admin/components/AdminLayout';
+import Hours from './admin/pages/Hours';
 
 //Wrapper component that will handle conditional rendering
 function LayoutWrapper(){
@@ -31,15 +34,15 @@ function LayoutWrapper(){
         <Route path="/contact-us" element={<Contact />} />
 
         {/* Admin Routes */}
+        {/* <ProtectedRoute> */}
         <Route path="/admin/login" element={<LoginPage />} />
-        <Route
-          path="/admin/dashboard"
-          element={
-            // <ProtectedRoute>
-              <DashboardPage />
-            // </ProtectedRoute>
-          }
-        />
+
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route path="dashboard" element={<DashboardPage />} />
+          <Route path="menu" element={<MenuAdminPage />} />
+          <Route path="hours" element={<Hours />} />
+        </Route>
+        {/* </ProtectedRoute> */}
       </Routes>
       <ToastContainer position="top-right" autoClose={3000} />
       {!isAdminRoute && <Footer />}
@@ -60,4 +63,4 @@ function App() {
 }
 
 
-export default App
+export default App;

@@ -1,36 +1,6 @@
-import AdminNavBar from '../../assets/components/AdminNavBar';
-import MenuList from '../components/MenuList';
-import AddMenuItem from '../components/AddMenuItem';
-import EditHours from '../components/EditHours';
-import ImageUploader from '../components/ImageUploader';
-import { useEffect, useState } from 'react';
-import axios from 'axios';
+import AdminNavBar from '../components/AdminNavBar';
 
 function DashboardPage() {
-  const [menuItems, setMenuItems] = useState([]);
-
-  const fetchItems = async () => {
-    try{
-      const res = await axios.get('http://localhost:5000/menu-items');
-      setMenuItems(res.data);
-    }catch(err){
-      console.error('Error fetching menu items', err);
-    }
-  }
-
-    //function to delete menu item
-    const handleDelete = async (id: string) => {
-      try {
-          await axios.delete(`http://localhost:5000/menu-items/${id}`);
-          await fetchItems();
-      } catch(err) {
-          console.error('Error deleting item', err);
-      }
-  };
-
-  useEffect(() => {
-    fetchItems();
-  }, []);
 
   
 
@@ -38,14 +8,6 @@ function DashboardPage() {
   return (
     <div>
       <AdminNavBar />
-      <div className="p-6">
-        <AddMenuItem refreshItems={fetchItems} />
-        <MenuList items={menuItems} onDelete={handleDelete} refreshItems={fetchItems}/>
-        <EditHours />
-        <ImageUploader onUploadComplete={(url) => {
-          console.log('Image uploaded to:', url);
-        }} />
-      </div>
     </div>
   );
 }
