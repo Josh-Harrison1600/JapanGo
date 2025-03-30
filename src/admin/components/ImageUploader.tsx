@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
 
 interface ImageUploaderProps{
     onUploadComplete: (url: string) => void;
@@ -11,10 +12,10 @@ function ImageUploader({ onUploadComplete }: ImageUploaderProps){
     const [preview, setPreview] = useState<string | null>(null);
 
     //State for the imageUrl log
-    const [uploadLog, setUploadLog] = useState<{ originalName: String, cloudfrontUrl: string }[]>([]); 
+    const [uploadLog, setUploadLog] = useState<{ originalName: string, cloudfrontUrl: string }[]>([]); 
 
 
-    //Fetch the logs
+    //Fetch the logs of all uploaded images
     useEffect(() => {
       axios.get('http://localhost:5000/upload-image/log')
       .then(res => setUploadLog(res.data))
@@ -51,7 +52,7 @@ function ImageUploader({ onUploadComplete }: ImageUploaderProps){
     };
 
     return (
-        <div className="mt-12 p-4 rounded-md shadow-md bg-white border max-w-md">
+        <div className="mt-12 p-4 rounded-md shadow-md bg-white border max-w-full">
           <h3 className="text-lg font-semibold mb-2">Upload Image</h3>
       
           {/* Styled file input */}
@@ -82,26 +83,45 @@ function ImageUploader({ onUploadComplete }: ImageUploaderProps){
             </div>
           )}
 
-          {/* Upload Log */}
+          {/* Upload History Table */}
           {uploadLog.length > 0 && (
-            <div className='mt-4'>
-              <h4 className='font-semibold mb-2'>Upload History</h4>
-              <ul className='space-y-1 text-sm'>
-                {uploadLog.map((item, index) => (
-                  <li key={index} className='bg-gray-100 p-2 rounded border'>
-                    <strong>{item.originalName}</strong><br />
-                    <a href={item.cloudfrontUrl} target="_blank" rel="noopener noreferrer" className='text-blue-600 underline'>
-                      {item.cloudfrontUrl}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
+            <Box className="mt-6">
+              <Typography variant="h6" className="mb-3 font-semibold">Upload History</Typography>
 
+              <TableContainer component={Paper}>
+                <Table size="small" aria-label="uploaded images table">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell><strong>Original Name</strong></TableCell>
+                      <TableCell><strong>Preview</strong></TableCell>
+                      <TableCell><strong>URL</strong></TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {uploadLog.map((item, index) => (
+                      <TableRow key={index}>
+                        <TableCell>{item.originalName}</TableCell>
+                        <TableCell>
+                          <img
+                            src={item.cloudfrontUrl}
+                            alt={item.originalName}
+                            style={{ width: '64px', height: 'auto', borderRadius: '4px' }}
+                          />
+                        </TableCell>
+                        <TableCell>
+                          <a href={item.cloudfrontUrl} target="_blank" rel="noopener noreferrer" style={{ color: '#2563EB' }}>
+                            {item.cloudfrontUrl}
+                          </a>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </Box>
+          )}
         </div>
       );
-      
 }
 
 export default ImageUploader;
