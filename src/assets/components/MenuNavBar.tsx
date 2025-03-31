@@ -17,7 +17,7 @@ function MenuCategoryNav() {
     };
 
     return(
-        <div className="bg-red-500 flex justify-center space-x-6 py-6 top-16 z-50 mb-4">
+        <div className="sticky bg-red-500 flex justify-center space-x-6 py-6 top-0 z-50 mb-4">
             {Object.entries(categoryTree).map(([group, categories]) => (
                 <div key={group} className="relative">
                     {/* Top Level Button */}
