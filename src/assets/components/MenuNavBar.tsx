@@ -42,7 +42,7 @@ function MenuCategoryNav() {
                                     <li key={category}>
                                         <a
                                         href={`#${category.toLowerCase().replace(/[^a-z0-9]/gi, "-")}`}
-                                        className="block px-4 py-2 hover:bg-red-600 font-bold"
+                                        className="block px-4 py-2 hover:bg-red-600 font-bold transition-colors duration-100"
                                         >
                                             {category}
                                         </a>

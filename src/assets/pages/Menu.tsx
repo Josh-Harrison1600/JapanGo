@@ -57,29 +57,38 @@ function Menu(){
                         {/* Grid for Category */}  
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  lg:grid-cols-4 gap-6">
                             {items.map((item) => (
-                                <div key={item._id} 
-                                className="bg-gray-200 rounded-lg overflow-hidden p-4 shadow flex flex-col items-center text-center space-y-2"
+                                <a
+                                    key={item._id}
+                                    href="https://www.doordash.com/en-CA/store/japan-go-moncton-670911/"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="cursor-pointer"
                                 >
-                                    {/* Image */}
-                                    {item.imageUrl && (
-                                        <img
-                                            src={item.imageUrl}
-                                            alt={item.name}
-                                            className="w-[300px] h-[300px] object-cover rounded"
-                                        />
-                                    )}
+                                    <div 
+                                    className="bg-gray-100 hover:bg-gray-300 transition-colors duration-300 border-2 border-black rounded-lg overflow-hidden p-4 shadow flex flex-col items-center text-center space-y-2 h-[420px] max-w-[450px]"
+                                    
+                                    >
+                                        {/* Image */}
+                                        {item.imageUrl && (
+                                            <img
+                                                src={item.imageUrl}
+                                                alt={item.name}
+                                                className="w-[300px] h-[300px] object-cover rounded"
+                                            />
+                                        )}
 
-                                    {/* Name */}
-                                    <p className="text-lg font-semibold">{item.name}</p>
+                                        {/* Name */}
+                                        <p className="text-lg font-semibold">{item.name}</p>
 
-                                    {/* Price */}
-                                    <p className="text-sm font-semibold">${item.price.toFixed(2)}</p>
+                                        {/* Price */}
+                                        <p className="text-sm font-semibold">${item.price.toFixed(2)}</p>
 
-                                    {/* Description */}
-                                    {item.description && (
-                                        <p className="text-xs text-gray-700">{item.description}</p>
-                                    )}
-                                </div>
+                                        {/* Description */}
+                                        {item.description && (
+                                            <p className="text-xs text-gray-700 line-clamp-2">{item.description}</p>
+                                        )}
+                                    </div>
+                                </a>
                             ))}
                         </div>
                     </div>
