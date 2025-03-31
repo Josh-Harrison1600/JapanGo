@@ -12,17 +12,17 @@ const categoryTree = {
 function MenuCategoryNav() {
     const [openDropdown, setOpenDropdown] = useState<string | null>(null);
 
-    const toggleDropdown = (group: string) => {
-        setOpenDropdown((prev) => (prev === group ? null : group));
-    };
-
     return(
         <div className="sticky bg-red-500 flex justify-center space-x-6 py-6 top-0 z-50 mb-4">
             {Object.entries(categoryTree).map(([group, categories]) => (
-                <div key={group} className="relative">
+                <div 
+                    key={group} 
+                    className="relative"
+                    onMouseEnter={() => setOpenDropdown(group)}
+                    onMouseLeave={() => setOpenDropdown(null)}
+                >
                     {/* Top Level Button */}
                     <button
-                        onClick={() => toggleDropdown(group)}
                         className="text-lg font-bold text-white hover:text-gray-200 transition-all duration-300 cursor-pointer"
                     >
                         {group}
@@ -32,7 +32,7 @@ function MenuCategoryNav() {
                     <AnimatePresence>
                         {openDropdown === group && (
                             <motion.ul 
-                                className="absolute top-full left-0 mt-2 bg-red-500 text-white rounded shadow-md py-2 w-48"
+                                className="absolute top-full left-0 bg-red-500 text-white rounded shadow-md py-2 w-48"
                                 initial={{ opacity: 0, scale: 0.95, y: -10 }}
                                 animate={{ opacity: 1, scale: 1, y: 0 }}
                                 exit={{ opacity: 0, scale: 0.95, y: -10 }}

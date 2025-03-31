@@ -34,15 +34,13 @@ function LayoutWrapper(){
         <Route path="/contact-us" element={<Contact />} />
 
         {/* Admin Routes */}
-        {/* <ProtectedRoute> */}
         <Route path="/admin/login" element={<LoginPage />} />
 
-        <Route path="/admin" element={<AdminLayout />}>
+        <Route path="/admin" element={<ProtectedRoute><AdminLayout /></ProtectedRoute>}>
           <Route path="dashboard" element={<DashboardPage />} />
           <Route path="menu" element={<MenuAdminPage />} />
           <Route path="hours" element={<Hours />} />
         </Route>
-        {/* </ProtectedRoute> */}
       </Routes>
       <ToastContainer position="top-right" autoClose={3000} />
       {!isAdminRoute && <Footer />}

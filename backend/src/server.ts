@@ -7,7 +7,7 @@ import cors from 'cors';
 import routes from './routes/menuRoutes';
 import hoursRoute from './routes/hoursRoute';
 import uploadRoute from './routes/uploadRoute';
-
+import authRoute from './routes/authRoute';
 
 const app = express();
 
@@ -24,7 +24,8 @@ mongoose.connect(process.env.MONGO_URI as string)
 app.use('/menu-items', routes);
 app.use('/hours', hoursRoute);
 app.use('/upload-image', uploadRoute);
-
+app.use('/auth', authRoute);
+console.log(authRoute)
 // Base route
 app.get('/', (req, res) => {
   res.send('API is running...');

@@ -43,7 +43,6 @@ function AdminNavBar() {
                     fontSize="large"
                     onClick={() => setSidebarOpen(true)}
                     />
-                
             </nav>
 
             {/* Sidebar Container */}
