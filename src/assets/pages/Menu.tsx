@@ -1,6 +1,7 @@
 import MenuNavBar from "../components/MenuNavBar";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { motion } from 'framer-motion';
 
 //Define requirments for a menu items
 interface MenuItem {
@@ -43,6 +44,13 @@ function Menu(){
     setGroupedItems(grouped);
 }, [items]);
 
+    //Animation variants for the fade-up effect
+    const fadeUp = {
+        hidden: { opacity: 0, y: 50 },
+        visible: { opacity: 1, y: 0 },
+    };
+
+
     return(
         <>
             <MenuNavBar />
@@ -55,7 +63,13 @@ function Menu(){
                         <h2 className="text-3xl font-bold text-black mb-4">{category}</h2>
 
                         {/* Grid for Category */}  
-                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  lg:grid-cols-4 gap-6">
+                        <motion.div 
+                            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  lg:grid-cols-4 gap-6"
+                            initial="hidden"
+                            animate="visible"
+                            variants={fadeUp}
+                            transition={{ duration: 0.5}}
+                        >
                             {items.map((item) => (
                                 <a
                                     key={item._id}
@@ -65,7 +79,7 @@ function Menu(){
                                     className="cursor-pointer"
                                 >
                                     <div 
-                                    className="bg-gray-100 hover:bg-gray-300 transition-colors duration-300 border-2 border-black rounded-lg overflow-hidden p-4 shadow flex flex-col items-center text-center space-y-2 h-[420px] max-w-[450px]"
+                                    className="bg-gray-100 hover:bg-gray-300 transition-colors duration-300 border-2 border-gray-100 shadow-xl rounded-lg overflow-hidden p-4 flex flex-col items-center text-center space-y-2 h-[420px] max-w-[450px]"
                                     
                                     >
                                         {/* Image */}
@@ -90,7 +104,7 @@ function Menu(){
                                     </div>
                                 </a>
                             ))}
-                        </div>
+                        </motion.div>
                     </div>
                 ))}
             </div>
