@@ -3,77 +3,85 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import dotenv from 'dotenv';
 import User from '../models/User';
-import speakeasy from 'speakeasy';
+import { sendVerificationEmail } from '../utils/sendVerificationEmail';
 
 dotenv.config();
 
 const router = express.Router();
 
-// POST /auth/login
-// Authenticates a user and returns a JWT token
+//User enters email/pass and then 6 digit code is sent
 router.post('/login', async function (req: Request, res: Response): Promise<void> {
   const { email, password } = req.body;
 
   try {
-    //Check if the user exists in the database
+
+    //Check if the username matches
     const user = await User.findOne({ email });
-    if (!user) {
-      res.status(401).json({ message: 'Invalid email or password' });
+    if(!user){
+      res.status(401).json({ message: 'Invalid Credentials!'});
       return;
     }
-
-    //Compare password with hashed password in DB
+    
+    //Check if the pass matches
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-      res.status(401).json({ message: 'Invalid email or password' });
+    if(!isMatch){
+      res.status(401).json({ message: 'Invalid Credentials!'});
       return;
     }
 
-    //This makes MFA required
-    if (user.mfaEnabled) {
-      res.status(200).json({ mfaRequired: true, email });
-      return;
-    }
+    //Generate 6 digit code & expiration
+    const code = Math.floor(100000 + Math.random() * 900000).toString();
+    const expires = new Date(Date.now() + 10 * 60 * 1000);
 
-    res.status(403).json({ message: 'MFA is required for this account.' });
-    return;
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: 'Server error' });
+    //Save to the DB
+    user.verificationCode = code;
+    user.verificationCodeExpires = expires;
+    await user.save();
+
+    //Send the email
+    await sendVerificationEmail(email, code);
+
+    res.status(200).json({ message: 'Verification code sent to email' });
+  }catch(err){
+    console.error('Login error:', err);
+    res.status(500).json({ message: 'Server Error'});
   }
 });
 
-/**
- * Step 2 - Verify MFA TOTP
- * Only after successful verification will we issue a JWT token.
- */
-router.post('/verify-mfa', async (req: Request, res: Response): Promise<void> => {
-  const { email, token } = req.body;
+//For verifying the code once it is sent to the user
+router.post('/verify-code', async (req: Request, res: Response ): Promise<void> => {
+  const { email, code } = req.body;
+
 
   try {
     const user = await User.findOne({ email });
-    if (!user || !user.mfaSecret){  
-      res.status(401).json({ message: 'MFA not configured' });
-      return;
-    }
-    const verified = speakeasy.totp.verify({
-      secret: user.mfaSecret,
-      encoding: 'base32',
-      token,
-    });
 
-    if (!verified){ 
-      res.status(401).json({ message: 'Invalid MFA token' });
+    if (!user || !user.verificationCode || !user.verificationCodeExpires) {
+      res.status(401).json({ message: 'Code not found. Please log in again.' });
+      return
+    }
+
+    if (user.verificationCode !== code) {
+      res.status(401).json({ message: 'Invalid verification code' });
       return;
     }
 
-    //Else, send JWT token
-    const jwtToken = jwt.sign({ userId: user._id }, process.env.JWT_SECRET!, { expiresIn: '2h' });
+    if (user.verificationCodeExpires < new Date()) {
+      res.status(401).json({ message: 'Code expired. Please try again.' });
+      return;
+    }
 
-    res.json({ token: jwtToken });
+    // Clear the code so it can't be reused
+    user.verificationCode = null;
+    user.verificationCodeExpires = null;
+    await user.save();
+
+    // Issue JWT
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET!, { expiresIn: '2h' });
+    res.status(200).json({ token });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: 'MFA verification failed' });
+    console.error('Code verification error:', err);
+    res.status(500).json({ message: 'Server error' });
   }
 });
 

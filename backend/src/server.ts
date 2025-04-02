@@ -9,6 +9,8 @@ import hoursRoute from './routes/hoursRoute';
 import uploadRoute from './routes/uploadRoute';
 import authRoute from './routes/authRoute';
 import mfaRoute from './routes/mfaRoute';
+import { SitemapStream, streamToPromise } from 'sitemap';
+import { Readable } from 'stream';
 
 const app = express();
 
@@ -32,6 +34,32 @@ app.use('/mfa', mfaRoute);
 app.get('/', (req, res) => {
   res.send('API is running...');
 });
+
+
+//For the sitemap.xml
+app.get('/sitemap.xml', async (req, res) => {
+  try {
+    const links = [
+      { url: '/', changefreq: 'daily', priority: 1.0 },
+      { url: '/shop', changefreq: 'weekly', priority: 0.8 },
+      { url: '/contact-us', changefreq: 'monthly', priority: 0.6 },
+      { url: '/admin/login', changefreq: 'monthly', priority: 0.4 },
+    ];
+
+    const stream = new SitemapStream({ hostname: 'http://localhost:5000' }); 
+
+    const xml = await streamToPromise(Readable.from(links).pipe(stream)).then(data =>
+      data.toString()
+    );
+
+    res.header('Content-Type', 'application/xml');
+    res.send(xml);
+  } catch (err) {
+    console.error('Sitemap error:', err);
+    res.status(500).send('Error generating sitemap');
+  }
+});
+
 
 // Start server
 const PORT = process.env.PORT || 5000;
