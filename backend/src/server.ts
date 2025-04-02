@@ -8,6 +8,7 @@ import routes from './routes/menuRoutes';
 import hoursRoute from './routes/hoursRoute';
 import uploadRoute from './routes/uploadRoute';
 import authRoute from './routes/authRoute';
+import mfaRoute from './routes/mfaRoute';
 
 const app = express();
 
@@ -25,7 +26,8 @@ app.use('/menu-items', routes);
 app.use('/hours', hoursRoute);
 app.use('/upload-image', uploadRoute);
 app.use('/auth', authRoute);
-console.log(authRoute)
+app.use('/mfa', mfaRoute);
+
 // Base route
 app.get('/', (req, res) => {
   res.send('API is running...');
