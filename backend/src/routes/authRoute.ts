@@ -41,7 +41,7 @@ router.post('/login', async function (req: Request, res: Response): Promise<void
     //Send the email
     await sendVerificationEmail(email, code);
 
-    res.status(200).json({ message: 'Verification code sent to email' });
+    res.status(200).json({ message: 'Verification code sent to email', verificationPending: true });
   }catch(err){
     console.error('Login error:', err);
     res.status(500).json({ message: 'Server Error'});
@@ -76,7 +76,7 @@ router.post('/verify-code', async (req: Request, res: Response ): Promise<void> 
     user.verificationCodeExpires = null;
     await user.save();
 
-    // Issue JWT
+    //Issue JWT
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET!, { expiresIn: '2h' });
     res.status(200).json({ token });
   } catch (err) {

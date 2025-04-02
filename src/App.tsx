@@ -16,6 +16,7 @@ import DashboardPage from './admin/pages/Dashboard';
 import MenuAdminPage from './admin/pages/MenuAdminPage';
 import AdminLayout from './admin/components/AdminLayout';
 import Hours from './admin/pages/Hours';
+import VerifyEmailCode from './admin/pages/VerifyEmailCode';
 
 //Wrapper component that will handle conditional rendering
 function LayoutWrapper(){
@@ -35,6 +36,7 @@ function LayoutWrapper(){
 
         {/* Admin Routes */}
         <Route path="/admin/login" element={<LoginPage />} />
+        <Route path="/admin/verify" element={<VerifyEmailCode />} />
 
         <Route path="/admin" element={<ProtectedRoute><AdminLayout /></ProtectedRoute>}>
           <Route path="dashboard" element={<DashboardPage />} />

@@ -8,7 +8,6 @@ import routes from './routes/menuRoutes';
 import hoursRoute from './routes/hoursRoute';
 import uploadRoute from './routes/uploadRoute';
 import authRoute from './routes/authRoute';
-import mfaRoute from './routes/mfaRoute';
 import { SitemapStream, streamToPromise } from 'sitemap';
 import { Readable } from 'stream';
 
@@ -28,7 +27,6 @@ app.use('/menu-items', routes);
 app.use('/hours', hoursRoute);
 app.use('/upload-image', uploadRoute);
 app.use('/auth', authRoute);
-app.use('/mfa', mfaRoute);
 
 // Base route
 app.get('/', (req, res) => {

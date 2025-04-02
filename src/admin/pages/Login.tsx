@@ -22,16 +22,12 @@ function Login() {
       });
 
       const data = await response.json();
-
-      if (response.ok && data.token) {
-        // Store JWT in localStorage
-        localStorage.setItem('token', data.token);
-        
-        // Show success and redirect
-        toast.success("Logged in successfully!");
-        navigate('/admin/dashboard');
-      } else {
-        toast.error(data.message || 'Invalid credentials');
+      
+      if(data.verificationPending){
+        toast.success("Verification code sent to your email");
+        navigate(`/admin/verify?email=${encodeURIComponent(email)}`);
+      }else{
+        toast.error(data.message || 'Invalid Credentials');
       }
     } catch (error) {
       console.error('Login failed:', error);
