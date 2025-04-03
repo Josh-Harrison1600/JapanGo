@@ -79,7 +79,7 @@ function Menu(){
                                     className="cursor-pointer"
                                 >
                                     <div 
-                                    className="bg-gray-100 hover:bg-gray-300 transition-colors duration-300 border-2 border-gray-100 shadow-xl rounded-lg overflow-hidden p-4 flex flex-col items-center text-center space-y-2 h-[420px] max-w-[450px]"
+                                    className="bg-gray-100 hover:bg-gray-300 transition-colors duration-300 border-2 border-gray-100 shadow-xl rounded-lg overflow-hidden p-4 flex flex-col items-center text-center space-y-2 h-[430px] max-w-[450px]"
                                     
                                     >
                                         {/* Image */}

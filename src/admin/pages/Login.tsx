@@ -55,7 +55,7 @@ function Login() {
           className="border px-3 py-2 w-full"
           required
         />
-        <button type="submit" className='bg-black text-white px-4 py-2 w-full hover:bg-gray-800 transition'>
+        <button type="submit" className='bg-black text-white px-4 py-2 w-full hover:bg-gray-800 transition cursor-pointer'>
           Login
         </button>
       </form>
