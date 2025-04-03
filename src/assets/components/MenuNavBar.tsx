@@ -32,7 +32,9 @@ function MenuCategoryNav() {
                     <AnimatePresence>
                         {openDropdown === group && (
                             <motion.ul 
-                                className="absolute top-full left-0 bg-red-500 text-white rounded shadow-md py-2 w-48"
+                            className={`absolute top-full bg-red-500 text-white rounded shadow-md py-2 w-48 
+                                ${group === 'Starters' ? 'left-0' : 'left-1/2 -translate-x-1/2'} 
+                                md:left-0 md:translate-x-0`}
                                 initial={{ opacity: 0, scale: 0.95, y: -10 }}
                                 animate={{ opacity: 1, scale: 1, y: 0 }}
                                 exit={{ opacity: 0, scale: 0.95, y: -10 }}
