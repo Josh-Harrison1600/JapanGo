@@ -4,6 +4,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
+import emailjs from '@emailjs/browser';
 
 function Contact(){
     //States for the modal
@@ -16,13 +17,13 @@ function Contact(){
     const [email, setEmail] = useState('');
     const [message, setMessage] = useState('');
 
-    //Function for the submit button that also handles the MUI modal (handleOpen)
-    const formRef = useRef<HTMLFormElement | null>(null);
-    const sendEmailPLACEHOLDER = (e: React.FormEvent) => {
-        e.preventDefault();
-        console.log('sendEmailPLACEHOLDER');
-        handleOpen();
-        //clear the form after submission
+    //Env variables for emailjs
+    const SERVICE_ID = import.meta.env.VITE_SERVICE_ID;
+    const TEMPLATE_ID = import.meta.env.VITE_TEMPLATE_ID;
+    const PUBLIC_KEY = import.meta.env.VITE_PUBLIC_KEY;
+
+    //Function for clearing the form
+    const clearForm = () => {
         setName('');
         setEmail('');
         setMessage('');
@@ -30,6 +31,9 @@ function Contact(){
         localStorage.removeItem('contactEmail');
         localStorage.removeItem('contactMessage');
     }
+
+    //Function for the submit button that also handles the MUI modal (handleOpen)
+    const formRef = useRef<HTMLFormElement | null>(null);
 
     //Animation variants for the fade-up effect
     const fadeUp = {
@@ -68,6 +72,27 @@ function Contact(){
         localStorage.setItem('contactMessage', message);
     }, [name, email, message]);
 
+    //Function for the emailjs
+    const sendEmail = (e: React.FormEvent) => {
+        e.preventDefault();
+
+        emailjs.sendForm(
+            SERVICE_ID,
+            TEMPLATE_ID,
+            formRef.current!,
+            PUBLIC_KEY
+        )
+        .then((result) => {
+            console.log("Email sent successfully:", result.text);
+            handleOpen();
+            clearForm();
+        })
+        .catch((error) => {
+            console.error('Email sending failed:', error);
+            alert('Oops! Failed to send message. Try again later.');
+        });
+    }
+
     return(
         <>
             {/* Title */}
@@ -84,7 +109,7 @@ function Contact(){
 
             {/* Form  Fields*/}
             <div className="max-w-lg mx-auto px-4 sm:px-6">
-                <form ref={formRef} onSubmit={sendEmailPLACEHOLDER} className='space-y-6'>
+                <form ref={formRef} onSubmit={sendEmail} className='space-y-6'>
 
                     {/* Your Name Section */}
                     <div>
