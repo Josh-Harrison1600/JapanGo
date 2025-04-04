@@ -44,7 +44,7 @@ app.get('/sitemap.xml', async (req, res) => {
       { url: '/admin/login', changefreq: 'monthly', priority: 0.4 },
     ];
 
-    const stream = new SitemapStream({ hostname: 'http://localhost:5000' }); 
+    const stream = new SitemapStream({ hostname: process.env.HOSTNAME }); 
 
     const xml = await streamToPromise(Readable.from(links).pipe(stream)).then(data =>
       data.toString()

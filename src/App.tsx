@@ -7,6 +7,7 @@ import Menu from "./assets/pages/Menu";
 import Contact from "./assets/pages/Contact";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import OrderNow from './assets/pages/OrderNow';
 
 // Admin imports
 import { AuthProvider } from './contexts/AuthContext';
@@ -33,6 +34,7 @@ function LayoutWrapper(){
         <Route path="/" element={<Home />} />
         <Route path="/Shop" element={<Menu />} />
         <Route path="/contact-us" element={<Contact />} />
+        <Route path="/order-now" element={<OrderNow />} />
 
         {/* Admin Routes */}
         <Route path="/admin/login" element={<LoginPage />} />

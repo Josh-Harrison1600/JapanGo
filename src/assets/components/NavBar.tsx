@@ -61,6 +61,17 @@ function NavBar() {
                 </NavLink>
 
                 <NavLink
+                    to="/order-now"
+                    className={({ isActive }) =>
+                        `font-bold text-2xl mr-8 duration-300 transition-all ${
+                            isActive ? "text-red-500" : "text-white hover:text-red-500"
+                        }`
+                    }
+                >
+                    Order Now
+                </NavLink>
+
+                <NavLink
                     to="/contact-us"
                     className={({ isActive }) =>
                         `font-bold text-2xl mr-8 duration-300 transition-all ${
@@ -70,6 +81,7 @@ function NavBar() {
                 >
                     Contact Us
                 </NavLink>
+
             </div>
 
             {/* Animated Mobile Dropdown */}
@@ -105,6 +117,18 @@ function NavBar() {
                 </NavLink>
 
                 <NavLink
+                    to="/order-now"
+                    onClick={() => setMenuOpen(false)}
+                    className={({ isActive }) =>
+                        `block w-full px-6 py-2 font-bold text-2xl ${
+                            isActive ? "text-red-500" : "text-white hover:text-red-500"
+                        }`
+                    }
+                >
+                    Order Now
+                </NavLink>
+
+                <NavLink
                     to="/contact-us"
                     onClick={() => setMenuOpen(false)}
                     className={({ isActive }) =>
@@ -115,6 +139,7 @@ function NavBar() {
                 >
                     Contact Us
                 </NavLink>
+
             </div>
         </nav>
     );

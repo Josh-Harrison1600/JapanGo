@@ -26,7 +26,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     //On load check if the token exists
     useEffect(() => {
         const token = localStorage.getItem('token');
-        setIsAuthenticated(!!token);
+        if(token){
+            setIsAuthenticated(true);
+        }
     }, []);
 
     //Login function that checks credentials
