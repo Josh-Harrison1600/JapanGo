@@ -1,7 +1,14 @@
 import MenuNavBar from "../components/MenuNavBar";
-import { useEffect, useState } from "react";
+import { useEffect, useState} from "react";
+import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import { motion } from 'framer-motion';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import CloseIcon from '@mui/icons-material/Close';
+import IconButton from '@mui/material/IconButton';
+
 
 //Define requirments for a menu items
 interface MenuItem {
@@ -11,12 +18,23 @@ interface MenuItem {
     price: number;
     description?: string;
     imageUrl?: string;
+    extraInfo?: string;
 }
 
 function Menu(){
+    const navigate = useNavigate();
+
     //States to hold fetched items
     const [items, setItems] = useState<MenuItem[]>([]);
     const [groupedItems, setGroupedItems] = useState<{ [key: string]: MenuItem[] }>({});
+    
+    //State for the popup box
+    const[selectedItem, setSelectedItem] = useState<MenuItem | null>(null);
+
+    //Function to close the popup box
+    const handleClose = () => {
+        setSelectedItem(null);
+    };    
 
     //Fetch the menu items from the backend
     useEffect(() => {
@@ -74,7 +92,7 @@ function Menu(){
                                 {items.map((item) => (
                                     <a
                                         key={item._id}
-                                        href="https://www.doordash.com/en-CA/store/japan-go-moncton-670911/"
+                                        onClick={() => setSelectedItem(item)}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className="cursor-pointer"
@@ -110,6 +128,47 @@ function Menu(){
                     ))}
                 </div>
             </div>
+
+            {/* Popup Box */}
+            <Dialog
+                open={!!selectedItem}
+                onClose={handleClose}
+                fullWidth
+                maxWidth="sm"
+                >
+                {/* Modal Title with Close Button */}
+                <DialogTitle className="flex justify-between items-center">
+                    {selectedItem?.name}
+                    <IconButton onClick={handleClose}>
+                    <CloseIcon />
+                    </IconButton>
+                </DialogTitle>
+
+                {/* Modal Body */}
+                <DialogContent dividers className="space-y-4">
+
+                    {/* Price */}
+                    <p className="text-lg font-semibold">Price: ${selectedItem?.price.toFixed(2)}</p>
+
+                    {/* Description */}
+                    <p className="text-gray-700">{selectedItem?.description}</p>
+
+                    {/* Extra Info */}
+                    {selectedItem?.extraInfo && (
+                    <div className="border-t pt-2 text-sm text-gray-600">
+                        <strong>Details:</strong> {selectedItem.extraInfo}
+                    </div>
+                    )}
+
+                    {/* Order Now Button */}
+                    <button 
+                        className="bg-red-500 hover:bg-red-700 transition-all duration-300 text-white px-4 py-2 cursor-pointer font-bold"
+                        onClick={() => navigate('/order-now')}
+                    >
+                        Order Now
+                    </button>
+                </DialogContent>
+                </Dialog>
         </>
     )
 } 

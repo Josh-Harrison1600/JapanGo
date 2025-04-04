@@ -16,6 +16,7 @@ function AddMenuItem({ refreshItems }: AddMenuItemProps) {
   const [description, setDescription] = useState('');
   const [imageUrl, setImageUrl] = useState('');
   const [message, setMessage] = useState('');
+  const [extraInfo, setExtraInfo] = useState('');
 
   //Category options for the dropdown menu
   const categoryOptions = [
@@ -130,6 +131,13 @@ function AddMenuItem({ refreshItems }: AddMenuItemProps) {
         value={imageUrl}
         onChange={(e) => setImageUrl(e.target.value)}
         
+      />
+
+      <textarea 
+        placeholder="Box Description"
+        className="border px-3 py-2 w-full"
+        value={extraInfo}
+        onChange={(e) => setExtraInfo(e.target.value)}
       />
 
       <button type="submit" className="bg-black hover:bg-gray-700 transition-all duration-300 text-white px-4 py-2 cursor-pointer">Add Item</button>

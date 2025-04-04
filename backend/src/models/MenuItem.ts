@@ -13,7 +13,15 @@ const MenuItemSchema: Schema = new Schema({
     category: [{ type: String, required: true }],
     price: { type: Number, required: true },
     description: { type: String },
-    imageUrl: { type: String }
-  }, { timestamps: true });
+    imageUrl: { type: String },
+  
+    extraInfo:{
+      type: String,
+      default: ""
+
+    }
+
+  }, 
+  { timestamps: true });
 
 export default mongoose.model<IMenuItem>('MenuItem', MenuItemSchema);
