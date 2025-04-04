@@ -53,7 +53,7 @@ function Menu(){
 
     return(
         <>
-            <div className="flex min-h-screen">
+            <div className="flex min-h-screen pt-28 md:pt-0">
                 <MenuNavBar />
 
                 <div className="px-4 md:px-8 lg:px-16">
