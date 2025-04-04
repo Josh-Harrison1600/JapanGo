@@ -1,5 +1,4 @@
 import { motion } from 'framer-motion';
-
 import doorDashLogo from '../images/doorDashLogo.png';
 import skipTheDishesLogo from '../images/skipTheDishesLogo.png';
 import uberEatsLogo from '../images/uberEatsLogo.png';

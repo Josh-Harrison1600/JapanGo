@@ -53,60 +53,62 @@ function Menu(){
 
     return(
         <>
-            <MenuNavBar />
+            <div className="flex min-h-screen">
+                <MenuNavBar />
 
-            <div className="px-4 md:px-8 lg:px-16">
-                {/* Loop through the categories */}
-                {Object.entries(groupedItems).map(([category, items]) => (
-                    <div key={category} id={category.toLowerCase()} className="mb-12">
-                        {/* Category Title */}
-                        <h2 className="text-3xl font-bold text-black mb-4">{category}</h2>
+                <div className="px-4 md:px-8 lg:px-16">
+                    {/* Loop through the categories */}
+                    {Object.entries(groupedItems).map(([category, items]) => (
+                        <div key={category} id={category.toLowerCase()} className="mb-12">
+                            {/* Category Title */}
+                            <h2 className="text-3xl font-bold text-black mb-4 pt-4">{category}</h2>
 
-                        {/* Grid for Category */}  
-                        <motion.div 
-                            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  lg:grid-cols-4 gap-6"
-                            initial="hidden"
-                            animate="visible"
-                            variants={fadeUp}
-                            transition={{ duration: 0.5}}
-                        >
-                            {items.map((item) => (
-                                <a
-                                    key={item._id}
-                                    href="https://www.doordash.com/en-CA/store/japan-go-moncton-670911/"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="cursor-pointer"
-                                >
-                                    <div 
-                                    className="bg-gray-100 hover:bg-gray-300 transition-colors duration-300 border-2 border-gray-100 shadow-xl rounded-lg overflow-hidden p-4 flex flex-col items-center text-center space-y-2 h-[430px] max-w-[450px]"
-                                    
+                            {/* Grid for Category */}  
+                            <motion.div 
+                                className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  lg:grid-cols-4 gap-6"
+                                initial="hidden"
+                                animate="visible"
+                                variants={fadeUp}
+                                transition={{ duration: 0.5}}
+                            >
+                                {items.map((item) => (
+                                    <a
+                                        key={item._id}
+                                        href="https://www.doordash.com/en-CA/store/japan-go-moncton-670911/"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="cursor-pointer"
                                     >
-                                        {/* Image */}
-                                        {item.imageUrl && (
-                                            <img
-                                                src={item.imageUrl}
-                                                alt={item.name}
-                                                className="w-[300px] h-[300px] object-cover rounded"
-                                            />
-                                        )}
+                                        <div 
+                                        className="bg-gray-100 hover:bg-gray-300 transition-colors duration-300 border-2 border-gray-100 shadow-xl rounded-lg overflow-hidden p-4 flex flex-col items-center text-center space-y-2 h-[430px] max-w-[450px]"
+                                        
+                                        >
+                                            {/* Image */}
+                                            {item.imageUrl && (
+                                                <img
+                                                    src={item.imageUrl}
+                                                    alt={item.name}
+                                                    className="w-[300px] h-[300px] object-cover rounded"
+                                                />
+                                            )}
 
-                                        {/* Name */}
-                                        <p className="text-lg font-semibold">{item.name}</p>
+                                            {/* Name */}
+                                            <p className="text-lg font-semibold">{item.name}</p>
 
-                                        {/* Price */}
-                                        <p className="text-sm font-semibold">${item.price.toFixed(2)}</p>
+                                            {/* Price */}
+                                            <p className="text-sm font-semibold">${item.price.toFixed(2)}</p>
 
-                                        {/* Description */}
-                                        {item.description && (
-                                            <p className="text-xs text-gray-700 line-clamp-2">{item.description}</p>
-                                        )}
-                                    </div>
-                                </a>
-                            ))}
-                        </motion.div>
-                    </div>
-                ))}
+                                            {/* Description */}
+                                            {item.description && (
+                                                <p className="text-xs text-gray-700 line-clamp-2">{item.description}</p>
+                                            )}
+                                        </div>
+                                    </a>
+                                ))}
+                            </motion.div>
+                        </div>
+                    ))}
+                </div>
             </div>
         </>
     )

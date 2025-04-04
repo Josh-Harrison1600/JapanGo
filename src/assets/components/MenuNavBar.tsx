@@ -1,62 +1,52 @@
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 
-const categoryTree = {
-    Starters: ["Appetizer", "A La Carte"],
-    Mains: ["Hot Dishes & Noodles", "Lunch"],
-    Sushi: ["Rolls", "Special Rolls", "Sushi, Sashimi & Roll", "Roll Boat Tray"],
-    Others: ["Drink", "Salad", "Soup", "Vegetarian", "Tempura"], 
-};
+const allCategories = [
+    "Lunch",
+    "Appetizers",
+    "Soup",
+    "Salad",
+    "Tempura",
+    "A La Carte",
+    "Hot Dishes",
+    "Classic Rolls",
+    "Special Rolls",
+    "Combos",
+    "Roll Set Japan",
+    "Vegan Combo",
+    "Boat Tray",
+    "Party Tray",
+    "Drinks"
+  ];
 
-
-function MenuCategoryNav() {
-    const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+function MenuNavBar() {
+    //State to track currently selected category
+    const [activeCategory, setActiveCategory] = useState<string | null>(null);
 
     return(
-        <div className="sticky bg-red-500 flex justify-center space-x-6 py-6 top-0 z-10 mb-4">
-            {Object.entries(categoryTree).map(([group, categories]) => (
-                <div 
-                    key={group} 
-                    className="relative"
-                    onMouseEnter={() => setOpenDropdown(group)}
-                    onMouseLeave={() => setOpenDropdown(null)}
+        <div className="sticky top-0 h-screen w-64 overflow-y-auto bg-white border-r border-gray-200 p-4 z-20">
+            {/* Sidebar Title */}
+            <h2 className="text-lg font-bold mb-4">Menu Categories</h2>
+    
+            {/* Scrollable List of Categories */}
+            <ul className="space-y-2">
+            {allCategories.map((category) => (
+                <li key={category}>
+                {/* Anchor tag to scroll to menu section */}
+                <a
+                    href={`#${category.toLowerCase().replace(/[^a-z0-9]/gi, '-')}`}
+                    className={`block px-3 py-2 rounded hover:bg-red-100 transition-colors duration-200 font-medium text-gray-800 ${
+                    activeCategory === category ? 'bg-red-200' : ''
+                    }`}
+                    onMouseEnter={() => setActiveCategory(category)}
+                    onMouseLeave={() => setActiveCategory(null)}
                 >
-                    {/* Top Level Button */}
-                    <button
-                        className="text-lg font-bold text-white hover:text-gray-200 transition-all duration-300 cursor-pointer"
-                    >
-                        {group}
-                    </button>
-
-                    {/* Dropdown Menu */}
-                    <AnimatePresence>
-                        {openDropdown === group && (
-                            <motion.ul 
-                            className={`absolute top-full bg-red-500 text-white rounded shadow-md py-2 w-48 
-                                ${group === 'Starters' ? 'left-0' : 'left-1/2 -translate-x-1/2'} 
-                                md:left-0 md:translate-x-0`}
-                                initial={{ opacity: 0, scale: 0.95, y: -10 }}
-                                animate={{ opacity: 1, scale: 1, y: 0 }}
-                                exit={{ opacity: 0, scale: 0.95, y: -10 }}
-                                transition={{ duration: 0.2 }}
-                            >
-                                {categories.map((category) => (
-                                    <li key={category}>
-                                        <a
-                                        href={`#${category.toLowerCase().replace(/[^a-z0-9]/gi, "-")}`}
-                                        className="block px-4 py-2 hover:bg-red-600 font-bold transition-colors duration-100"
-                                        >
-                                            {category}
-                                        </a>
-                                    </li>
-                                ))}
-                            </motion.ul>
-                        )}
-                    </AnimatePresence>
-                </div>
+                    {category}
+                </a>
+                </li>
             ))}
+            </ul>
         </div>
     )
 }
 
-export default MenuCategoryNav;
+export default MenuNavBar;
