@@ -6,6 +6,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import FastfoodIcon from '@mui/icons-material/Fastfood';
 import WatchLaterIcon from '@mui/icons-material/WatchLater';
 import DashboardIcon from '@mui/icons-material/Dashboard';
+import HistoryIcon from '@mui/icons-material/History';
 
 function AdminNavBar() {
     //State to control sidebar opening and closing
@@ -80,6 +81,12 @@ function AdminNavBar() {
                 <Link to='/admin/hours' className='flex items-center gap-2 hover:text-red-400 transition-all duration-300' onClick={() => setSidebarOpen(false)}>
                     <WatchLaterIcon fontSize='small' />
                         Hours
+                    </Link>
+
+                
+                <Link to='/admin/archive' className='flex items-center gap-2 hover:text-red-400 transition-all duration-300' onClick={() => setSidebarOpen(false)}>
+                    <HistoryIcon fontSize='small' />
+                        Archive
                     </Link>
                 </div>
             </div>
