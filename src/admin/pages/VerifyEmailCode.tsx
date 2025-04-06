@@ -1,4 +1,3 @@
-import { version } from '@mui/material';
 import { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -15,13 +14,13 @@ function VerifyEmailCode(){
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email, code }),
+            credentials: 'include',
         });
 
         const data = await res.json();
 
         //If token is good login & redirect
-        if(res.ok && data.token){
-            localStorage.setItem('token', data.token);
+        if(res.ok){
             toast.success('Login Successful!');
             navigate('/admin/dashboard');
         }else{

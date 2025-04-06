@@ -1,18 +1,43 @@
-import jwt from 'jsonwebtoken';
+import jwt, { JwtPayload, VerifyErrors } from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
 import dotenv from 'dotenv';
 
 dotenv.config();
 
-export const authenticateToken = (req: Request, res: Response, next: NextFunction) => {
-  const authHeader = req.headers['authorization'];
-  const token = authHeader && authHeader.split(' ')[1]; // Bearer <token>
+//Extend the Express Request type to include custom user property
+interface AuthenticatedRequest extends Request {
+  user?: string | JwtPayload;
+}
 
-  if (!token) return res.status(401).json({ message: 'Access token missing' });
+export const authenticateToken = (
+  req: AuthenticatedRequest,
+  res: Response,
+  next: NextFunction
+): void => {
+  const token = req.cookies.token;
 
-  jwt.verify(token, process.env.JWT_SECRET!, (err, decoded) => {
-    if (err) return res.status(403).json({ message: 'Invalid token' });
-    (req as any).user = decoded;
-    next();
-  });
+  //If token is missing, respond with 401 
+  if (!token) {
+    res.status(401).json({ message: 'Access token missing' });
+    return;
+  }
+
+  //Verify JWT token
+  jwt.verify(
+    token,
+    process.env.JWT_SECRET!,
+    (
+      err: VerifyErrors | null,
+      decoded: string | JwtPayload | undefined 
+    ) => {
+      if (err) {
+        res.status(403).json({ message: 'Invalid token' });
+        return;
+      }
+
+      //Attach decoded token to the request for future use
+      req.user = decoded;
+      next();
+    }
+  );
 };

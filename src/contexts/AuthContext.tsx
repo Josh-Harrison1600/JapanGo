@@ -25,38 +25,61 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     //On load check if the token exists
     useEffect(() => {
-        const token = localStorage.getItem('token');
-        if(token){
-            setIsAuthenticated(true);
-        }
+        const checkAuth = async () => {
+            try {
+                const res = await fetch('http://localhost:5000/auth/check', {
+                    credentials: 'include', //includes cookies <-
+                });
+    
+                const data = await res.json();
+    
+                //If authenticated, set state to true
+                if (data.authenticated) {
+                    setIsAuthenticated(true);
+                } else {
+                    setIsAuthenticated(false);
+                }
+            } catch (err) {
+                console.error('Session check failed:', err);
+                setIsAuthenticated(false);
+            }
+        };
+    
+        checkAuth();
     }, []);
 
     //Login function that checks credentials
     const login = async (email: string, password: string): Promise<boolean> => {
-        try{
+        try {
             const response = await fetch('http://localhost:5000/auth/login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, password }),
+                credentials: 'include', 
             });
-
-            const data = await response.json();
-
-            if(response.ok && data.token){
-                localStorage.setItem('token', data.token);
+        
+            if (response.ok) {
                 setIsAuthenticated(true);
                 return true;
-            }else{
+            } else {
                 return false;
             }
-        }catch(err){
+        } catch (err) {
             console.error('Login error', err);
             return false;
         }
     };
 
-    const logout = () => {
-        localStorage.removeItem('token');
+    const logout = async () => {
+        try {
+            await fetch('http://localhost:5000/auth/logout', {
+                method: 'POST',
+                credentials: 'include',
+            });
+        } catch (err) {
+            console.error('Logout error', err);
+        }
+    
         setIsAuthenticated(false);
     }
 

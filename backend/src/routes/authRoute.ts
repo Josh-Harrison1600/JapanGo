@@ -1,9 +1,10 @@
 import express, { Request, Response } from 'express';
-import jwt from 'jsonwebtoken';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import dotenv from 'dotenv';
 import User from '../models/User';
 import { sendVerificationEmail } from '../utils/sendVerificationEmail';
+import { authenticateToken } from '../middleware/authMiddleware'; 
 
 dotenv.config();
 
@@ -77,13 +78,51 @@ router.post('/verify-code', async (req: Request, res: Response ): Promise<void> 
     await user.save();
 
     //Issue JWT
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET!, { expiresIn: '2h' });
-    res.status(200).json({ token });
+    const token = jwt.sign(
+      { userId: user._id },
+      process.env.JWT_SECRET!,
+      { expiresIn: '2h' } 
+    );
+
+    //Set the token as an HTTP-only cookie
+    res
+      .cookie('token', token, {
+        httpOnly: true,        
+        secure: false,        
+        sameSite: 'strict',    
+        maxAge: 60 * 60 * 1000 
+      })
+      .status(200)
+      .json({ message: 'Login successful' });
+
   } catch (err) {
     console.error('Code verification error:', err);
     res.status(500).json({ message: 'Server error' });
   }
 });
+
+router.get('/check', authenticateToken, (req: Request, res: Response) => {
+  const token = req.cookies.token;
+
+  //If token is missing, user is not authenticated
+  if (!token) {
+    res.status(401).json({ authenticated: false });
+    return;
+  }
+
+  //Verify the token using JWT
+  jwt.verify(token, process.env.JWT_SECRET!, (err: jwt.VerifyErrors | null, decoded: string | JwtPayload | undefined) => {
+    if (err) {
+      //Invalid or expired token
+      res.status(403).json({ authenticated: false });
+      return;
+    }
+
+    //Valid token, user is authenticated
+    res.status(200).json({ authenticated: true });
+  });
+});
+
 
 export default router;
     
