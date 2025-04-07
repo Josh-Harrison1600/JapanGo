@@ -14,6 +14,7 @@ export const authenticateToken = (
   res: Response,
   next: NextFunction
 ): void => {
+  console.log("COOKIES: ", req.cookies); // Log the cookies for debugging
   const token = req.cookies.token;
 
   //If token is missing, respond with 401 

@@ -102,26 +102,9 @@ router.post('/verify-code', async (req: Request, res: Response ): Promise<void> 
 });
 
 router.get('/check', authenticateToken, (req: Request, res: Response) => {
-  const token = req.cookies.token;
-
-  //If token is missing, user is not authenticated
-  if (!token) {
-    res.status(401).json({ authenticated: false });
-    return;
-  }
-
-  //Verify the token using JWT
-  jwt.verify(token, process.env.JWT_SECRET!, (err: jwt.VerifyErrors | null, decoded: string | JwtPayload | undefined) => {
-    if (err) {
-      //Invalid or expired token
-      res.status(403).json({ authenticated: false });
-      return;
-    }
-
-    //Valid token, user is authenticated
-    res.status(200).json({ authenticated: true });
-  });
+  res.status(200).json({ authenticated: true });
 });
+
 
 
 export default router;

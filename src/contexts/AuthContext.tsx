@@ -3,6 +3,7 @@ import { createContext, useState, ReactNode, useContext, useEffect } from 'react
 //Define the shape of your AuthContext
 interface AuthContextType {
     isAuthenticated: boolean;
+    loading: boolean;
     login: (email: string, password: string) => Promise<boolean>;
     logout: () => void;
 }
@@ -22,6 +23,7 @@ export const useAuth = () => {
 // AuthProvider wraps your app and provides auth state/actions
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     //On load check if the token exists
     useEffect(() => {
@@ -42,6 +44,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             } catch (err) {
                 console.error('Session check failed:', err);
                 setIsAuthenticated(false);
+            }finally{
+                setLoading(false);
             }
         };
     
@@ -85,8 +89,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
 
     return (
-        <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+        <AuthContext.Provider value={{ isAuthenticated, loading, login, logout }}>
             {children}
         </AuthContext.Provider>
     );
 };
+
