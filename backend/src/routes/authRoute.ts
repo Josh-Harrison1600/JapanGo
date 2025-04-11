@@ -88,7 +88,7 @@ router.post('/verify-code', async (req: Request, res: Response ): Promise<void> 
     res
       .cookie('token', token, {
         httpOnly: true,        
-        secure: false,        
+        secure: process.env.NODE_ENV === 'production',        
         sameSite: 'strict',    
         maxAge: 60 * 60 * 1000 
       })
