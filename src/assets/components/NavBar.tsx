@@ -38,11 +38,12 @@ function NavBar() {
 
             {/* Desktop navigation links */}
             <div className="hidden md:flex md:flex-row md:items-center md:space-x-4">
+                
                 <NavLink
                     to="/Shop"
                     className={({ isActive }) =>
-                        `font-bold text-2xl mr-8 duration-300 transition-all ${
-                            isActive ? "text-red-500" : "text-white hover:text-red-500 ml-4"
+                        `font-bold text-2xl mr-8 duration-300 transition-all ml-6 ${
+                            isActive ? "text-red-500" : "text-white hover:text-red-500"
                         }`
                     }
                 >

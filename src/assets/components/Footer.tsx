@@ -1,6 +1,7 @@
 
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { FaFacebook, FaInstagram } from 'react-icons/fa';
 
 interface HoursType {
     [day: string]: string;
@@ -27,11 +28,18 @@ function Footer(){
         <footer className="bg-[#010b1c] text-white p-8 text-center">
             <div className="flex flex-col md:flex-row justify-center md:justify-between items-center md:items-center space-y-6 md:space-y-0 md:space-x-8 md:text-left">
 
-                {/* Address, Hours, & Phone Number */}
-                <div>
-                    <h3 className="font-bold mb-2 text-2xl text-center">Address</h3>
-                        <p className="text-xl text-center">687 Main St, Moncton, NB E1C 1E3</p>
+            <div className="flex flex-col items-center mb-4 md:mb-0 ml-24">
+            <h3 className="font-bold text-2xl text-center mb-4">Follow Us!</h3>
+                <div className='flex gap-4'>
+                    <a href="https://www.facebook.com/JapanGoMoncton/" target="_blank" rel="noopener noreferrer" className="text-white hover:text-red-500 transition-colors duration-300">
+                        <FaFacebook size={36} />
+                    </a>
+                    <a href="https://www.instagram.com/japango_moncton/" target="_blank" rel="noopener noreferrer" className="text-white hover:text-red-500 transition-colors duration-300">
+                        <FaInstagram size={36} />
+                    </a>
                 </div>
+            </div>
+                {/* Address, Hours, & Phone Number */}
                 <div>
                     <h3 className="font-bold mb-2 text-2xl text-center">Hours</h3>
                         <div className=" text-xl text-center">
@@ -48,7 +56,11 @@ function Footer(){
                 </div>
                 <div>
                     <h3 className="font-bold mb-2 text-2xl text-center">Phone</h3>
-                        <p className="text-xl text-center">1+(506) 854-3600</p>
+                        <p className="text-xl text-center mb-8">1+(506) 854-3600</p>
+                    
+                    <h3 className="font-bold mb-2 text-2xl text-center">Address</h3>
+                        <p className="text-xl text-center">687 Main St, Moncton, NB E1C 1E3</p>
+
                 </div>
 
                 {/* Google Maps */}
