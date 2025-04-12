@@ -6,6 +6,7 @@ interface AuthContextType {
     loading: boolean;
     login: (email: string, password: string) => Promise<boolean>;
     logout: () => void;
+    checkAuth: () => Promise<void>;
 }
 
 //Create the context with a default of null
@@ -25,30 +26,30 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [loading, setLoading] = useState(true);
 
+    const checkAuth = async () => {
+        try {
+            const res = await fetch('http://localhost:5000/auth/check', {
+                credentials: 'include', //includes cookies <-
+            });
+
+            const data = await res.json();
+
+            //If authenticated, set state to true
+            if (data.authenticated) {
+                setIsAuthenticated(true);
+            } else {
+                setIsAuthenticated(false);
+            }
+        } catch (err) {
+            console.error('Session check failed:', err);
+            setIsAuthenticated(false);
+        }finally{
+            setLoading(false);
+        }
+    };
+
     //On load check if the token exists
     useEffect(() => {
-        const checkAuth = async () => {
-            try {
-                const res = await fetch('http://localhost:5000/auth/check', {
-                    credentials: 'include', //includes cookies <-
-                });
-    
-                const data = await res.json();
-    
-                //If authenticated, set state to true
-                if (data.authenticated) {
-                    setIsAuthenticated(true);
-                } else {
-                    setIsAuthenticated(false);
-                }
-            } catch (err) {
-                console.error('Session check failed:', err);
-                setIsAuthenticated(false);
-            }finally{
-                setLoading(false);
-            }
-        };
-    
         checkAuth();
     }, []);
 
@@ -89,7 +90,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
 
     return (
-        <AuthContext.Provider value={{ isAuthenticated, loading, login, logout }}>
+        <AuthContext.Provider value={{ isAuthenticated, loading, login, logout, checkAuth }}>
             {children}
         </AuthContext.Provider>
     );

@@ -1,32 +1,40 @@
 import { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { useAuth } from '../../contexts/AuthContext';
 
 function VerifyEmailCode(){
     const [code, setCode] = useState('');
     const [searchParams] = useSearchParams();
     const email = searchParams.get('email') || '';
     const navigate = useNavigate();
+    const { checkAuth } = useAuth();
 
     //Get the info from the backend
     const handleVerify = async () => {
-        const res = await fetch('http://localhost:5000/auth/verify-code', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, code }),
-            credentials: 'include',
+        try{
+            const res = await fetch('http://localhost:5000/auth/verify-code', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, code }),
+                credentials: 'include',
         });
 
         const data = await res.json();
 
         //If token is good login & redirect
-        if(res.ok){
-            toast.success('Login Successful!');
+        if (res.ok) {
+            await checkAuth(); 
+            toast.success('Login successful!');
             navigate('/admin/dashboard');
-        }else{
-            toast.error(data.message || 'Invalid or Expired Code!')
+          } else {
+            toast.error(data.message || 'Invalid or expired code!');
+          }
+        } catch (err) {
+          console.error(err);
+          toast.error('Something went wrong');
         }
-    };
+      };
 
     return(
         <div className='flex flex-col items-center justify-center min-h-screen p-6'>
