@@ -14,6 +14,7 @@ const MenuItemSchema: Schema = new Schema({
     price: { type: Number, required: true },
     description: { type: String },
     imageUrl: { type: String },
+    archived: { type: Boolean, default: false },
   
     extraInfo:{
       type: String,

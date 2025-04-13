@@ -18,6 +18,7 @@ import MenuAdminPage from './admin/pages/MenuAdminPage';
 import AdminLayout from './admin/components/AdminLayout';
 import Hours from './admin/pages/Hours';
 import VerifyEmailCode from './admin/pages/VerifyEmailCode';
+import Archive from "./admin/pages/Archive";
 
 //Wrapper component that will handle conditional rendering
 function LayoutWrapper(){
@@ -44,6 +45,16 @@ function LayoutWrapper(){
           <Route path="dashboard" element={<DashboardPage />} />
           <Route path="menu" element={<MenuAdminPage />} />
           <Route path="hours" element={<Hours />} />
+          <Route
+            path="archive"
+            element={
+              <Archive
+                deletedItems={[]} 
+                onRestore={() => {}} 
+                refreshItems={() => {}} 
+              />
+            }
+          />
         </Route>
       </Routes>
       <ToastContainer position="top-right" autoClose={3000} />

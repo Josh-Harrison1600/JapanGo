@@ -23,6 +23,36 @@ router.put('/:id', async (req: Request, res: Response) => {
     res.json(item);
 });
 
+//Archive
+router.put('/menu-items/archive/:id', async (req, res) => {
+    try{
+        const item = await MenuItem.findByIdAndUpdate(req.params.id, { archived: false }, { new: true});
+        if(!item){
+            res.status(404).json({ message: "Item not found" })
+            return;
+        }
+        res.json(item);
+    }catch(err){
+        res.status(500).json({ message: "Error archiving item" })
+    }
+})
+
+
+//Restore
+router.put('/menu-items/restore/:id', async (req, res) => {
+    try{
+        const item = await MenuItem.findByIdAndUpdate(req.params.id, { archived: false }, { new: true});
+        if(!item){
+            res.status(404).json({ message: "Item not found" })
+            return;
+        }
+        res.json(item);
+    }catch(err){
+        res.status(500).json({ message: "Error restoring item" })
+    }
+})
+
+
 //Delete
 router.delete('/:id', async (req: Request, res: Response) => {
     await MenuItem.findByIdAndDelete(req.params.id);

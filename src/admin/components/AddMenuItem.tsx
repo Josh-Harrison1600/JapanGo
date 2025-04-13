@@ -67,7 +67,7 @@ function AddMenuItem({ refreshItems }: AddMenuItemProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 bg-gray-100 p-4 rounded-md mb-6">
+    <form onSubmit={handleSubmit} className="space-y-4 bg-white p-4 rounded-md mb-6">
       <h2 className="text-xl font-bold">Add New Menu Item</h2>
 
       <input
@@ -95,7 +95,7 @@ function AddMenuItem({ refreshItems }: AddMenuItemProps) {
             ...base,
             border: '1px solid #000000',
             borderRadius: 0,
-            backgroundColor: '#f3f4f6', 
+            backgroundColor: '#FFFFFF', 
             minHeight: '40px',
             boxShadow: 'none',
             '&:hover': {
