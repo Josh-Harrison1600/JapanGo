@@ -53,7 +53,7 @@ function MenuNavBar() {
       </div>
 
       {/* Mobile Top Nav */}
-      <div className="fixed md:hidden top-14 left-0 w-full bg-white z-30 shadow-md overflow-x-auto flex items-center px-2 py-2 space-x-3">
+      <div className="md:hidden top-14 left-0 w-full bg-white z-30 shadow-md overflow-x-auto flex items-center px-2 py-2 space-x-3">
         {/* Hamburger button opens modal */}
         <button onClick={() => setIsOpen(true)} className="p-2">
           <FiMenu size={24} />

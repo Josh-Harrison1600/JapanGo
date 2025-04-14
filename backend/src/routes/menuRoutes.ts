@@ -5,8 +5,15 @@ const router = express.Router();
 
 //Get all
 router.get('/', async (req: Request, res: Response) => {
-    const items = await MenuItem.find();
-    res.json(items);
+    try{
+        const query : any = {};
+        if(req.query.archived === 'true') query.archived = true;
+        else if (req.query.archived === 'false') query.archived = false;
+        const items = await MenuItem.find(query)
+        res.json(items);
+    }catch(err){
+        res.status(500).json({ message: "Error fetching items"})
+    }
 });
 
 //Create
@@ -24,9 +31,9 @@ router.put('/:id', async (req: Request, res: Response) => {
 });
 
 //Archive
-router.put('/menu-items/archive/:id', async (req, res) => {
+router.put('/archive/:id', async (req, res) => {
     try{
-        const item = await MenuItem.findByIdAndUpdate(req.params.id, { archived: false }, { new: true});
+        const item = await MenuItem.findByIdAndUpdate(req.params.id, { archived: true }, { new: true});
         if(!item){
             res.status(404).json({ message: "Item not found" })
             return;
