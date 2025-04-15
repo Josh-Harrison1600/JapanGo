@@ -23,7 +23,7 @@ function MenuTopNav() {
           <FiMenu size={24} />
         </button>
         <button onClick={scrollLeft}><MdArrowBackIos size={18} /></button>
-        <div ref={scrollRef} className="flex overflow-x-auto space-x-3">
+        <div ref={scrollRef} className="flex overflow-x-auto space-x-3 scroll-smooth touch-auto snap-x snap-mandatory">
           {allCategories.map((category) => (
             <a
               key={category}
