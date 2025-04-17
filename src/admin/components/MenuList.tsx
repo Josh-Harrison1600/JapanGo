@@ -5,6 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Checkbox, IconButton, Toolbar, Typography, Tooltip,TablePagination, Button, Modal, TextField, TableSortLabel, MenuItem } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import ArchiveIcon from '@mui/icons-material/Archive';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 //Categories for edit modal
 const categories = [
@@ -22,7 +23,7 @@ const categories = [
 ];
 
 
-function MenuList({ items, onArchive, refreshItems }: { items: any[]; onArchive: (id: string) => void; refreshItems: () => void; }) {
+function MenuList({ items, onArchive, refreshItems, isArchiveView = false }: { items: any[]; onArchive: (id: string) => void; refreshItems: () => void; isArchiveView?: boolean;}) {
   const [deleteTarget, setDeleteTarget] = useState<{ id: string, name: string } | null>(null);
   const [confirmName, setConfirmName] = useState('');
   const [editTarget, setEditTarget] = useState<any | null>(null);
@@ -52,6 +53,14 @@ function MenuList({ items, onArchive, refreshItems }: { items: any[]; onArchive:
 
   // function to send the edit to the api
   const handleEditSubmit = async () => {
+
+    //Price validation so the user cant enter strings
+    const validPrice = /^\d+(\.\d{1,2})?(-\d+(\.\d{1,2})?)?$/;
+    if (!validPrice.test(editForm.price)) {
+      toast.error('Invalid price format. Ex: 12.25 - 24.55.');
+      return;
+    }
+
     try {
       await axios.put(`http://localhost:5000/menu-items/${editTarget._id}`, editForm);
       refreshItems();
@@ -61,6 +70,7 @@ function MenuList({ items, onArchive, refreshItems }: { items: any[]; onArchive:
       console.error('Error updating item', err);
     }
   };
+
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
@@ -118,7 +128,7 @@ function MenuList({ items, onArchive, refreshItems }: { items: any[]; onArchive:
             </Typography>
           )}
           {selected.length > 0 ? (
-            <Tooltip title="Archive">
+            <Tooltip title={isArchiveView ? "Delete" : "Archive"}>
               <IconButton onClick={() => {
                 const target = items.find((item) => item._id === selected[0]);
                 if (target) setDeleteTarget({ id: target._id, name: target.name });
@@ -130,8 +140,7 @@ function MenuList({ items, onArchive, refreshItems }: { items: any[]; onArchive:
                   },
                 }}
               >
-            
-                <ArchiveIcon />
+                {isArchiveView ? <DeleteIcon /> : <ArchiveIcon />}
               </IconButton>
             </Tooltip>
           ) : null}
@@ -250,8 +259,12 @@ function MenuList({ items, onArchive, refreshItems }: { items: any[]; onArchive:
       {/* Delete Confirmation Modal */}
       <Modal open={!!deleteTarget} onClose={() => { setDeleteTarget(null); setConfirmName(''); }}>
         <Box sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', bgcolor: 'background.paper', p: 4, boxShadow: 24, width: 400 }}>
-          <Typography variant="h6">You are about to archive this item!</Typography>
-          <Typography>Type <strong>{deleteTarget?.name}</strong> to confirm archive:</Typography>
+          <Typography variant="h6">
+            {isArchiveView ? 'You are about to permanently delete this item!' : 'You are about to archive this item!'}
+          </Typography>
+          <Typography>
+            Type <strong>{deleteTarget?.name}</strong> to confirm {isArchiveView ? 'deletion' : 'archive'}:
+          </Typography>
           <TextField fullWidth variant="outlined" margin="normal" value={confirmName} onChange={(e) => setConfirmName(e.target.value)} />
           <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 1 }}>
             <Button
@@ -262,7 +275,7 @@ function MenuList({ items, onArchive, refreshItems }: { items: any[]; onArchive:
                   onArchive(deleteTarget.id);
                   setDeleteTarget(null);
                   setConfirmName('');
-                  toast.success('Item Archived Successfully!');
+                  toast.success(isArchiveView ? 'Item Permanently Deleted!' : 'Item Archived Successfully!');
                 } else {
                   toast.error('Name does not match!');
                 }
@@ -297,7 +310,7 @@ function MenuList({ items, onArchive, refreshItems }: { items: any[]; onArchive:
               </MenuItem>
             ))} 
           </TextField>
-          <TextField fullWidth variant="outlined" margin="dense" label="Price" name="price" type="number" value={editForm.price} onChange={handleEditChange} />
+          <TextField fullWidth variant="outlined" margin="dense" label="Price" name="price" type="string" value={editForm.price} onChange={handleEditChange} />
           <TextField fullWidth variant="outlined" margin="dense" label="Description" name="description" value={editForm.description} onChange={handleEditChange} />
           <TextField fullWidth variant="outlined" margin="dense" label="Image URL" name="imageUrl" value={editForm.imageUrl} onChange={handleEditChange} />
           <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 1, mt: 2 }}>

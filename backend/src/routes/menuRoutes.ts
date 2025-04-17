@@ -60,10 +60,19 @@ router.put('/menu-items/restore/:id', async (req, res) => {
 })
 
 
-//Delete
-router.delete('/:id', async (req: Request, res: Response) => {
-    await MenuItem.findByIdAndDelete(req.params.id);
-    res.json({ message: 'Item deleted' });
+//Permanently Delete
+router.delete('/archive/:id', async (req: Request, res: Response) => {
+    try{
+        const item = await MenuItem.findByIdAndDelete(req.params.id);
+        if(!item){
+            res.status(404).json({ message: "Item not found" })
+            return;
+        }
+        res.json({ message: "Item permanently deleted!"})
+    }catch(err){
+        console.error("Error deleting item:", err)
+        res.status(500).json({ message: "Error deleting item"})
+    }
 });
 
 export default router;

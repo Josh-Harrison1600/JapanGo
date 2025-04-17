@@ -39,7 +39,7 @@ function Archive({}: {
     return (
       <div>
         <div className="p-6">
-          <MenuList items={menuItems} onArchive={handleDelete} refreshItems={fetchItems}/>
+          <MenuList items={menuItems} onArchive={handleDelete} refreshItems={fetchItems} isArchiveView={true} />
         </div>
       </div>
     ); 
