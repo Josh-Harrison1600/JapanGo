@@ -22,7 +22,7 @@ const categories = [
 ];
 
 
-function MenuList({ items, onDelete, refreshItems }: { items: any[]; onDelete: (id: string) => void; refreshItems: () => void }) {
+function MenuList({ items, onArchive, refreshItems }: { items: any[]; onArchive: (id: string) => void; refreshItems: () => void }) {
   const [deleteTarget, setDeleteTarget] = useState<{ id: string, name: string } | null>(null);
   const [confirmName, setConfirmName] = useState('');
   const [editTarget, setEditTarget] = useState<any | null>(null);
@@ -259,7 +259,7 @@ function MenuList({ items, onDelete, refreshItems }: { items: any[]; onDelete: (
               color="error"
               onClick={() => {
                 if (confirmName === deleteTarget?.name) {
-                  onDelete(deleteTarget.id);
+                  onArchive(deleteTarget.id);
                   setDeleteTarget(null);
                   setConfirmName('');
                   toast.success('Item Deleted Successfully!');

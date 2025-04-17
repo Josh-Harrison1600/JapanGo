@@ -7,9 +7,9 @@ const router = express.Router();
 router.get('/', async (req: Request, res: Response) => {
     try{
         const query : any = {};
-        if(req.query.archived === 'true') query.archived = true;
-        else if (req.query.archived === 'false') query.archived = false;
-        const items = await MenuItem.find(query)
+        if (typeof req.query.archived !== 'undefined') {
+            query.archived = req.query.archived === 'true';
+          }        const items = await MenuItem.find(query)
         res.json(items);
     }catch(err){
         res.status(500).json({ message: "Error fetching items"})

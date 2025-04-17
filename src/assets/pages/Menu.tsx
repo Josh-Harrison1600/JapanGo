@@ -1,4 +1,3 @@
-import MenuNavBar from "../components/MenuNavBar";
 import { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
@@ -41,7 +40,7 @@ function Menu(){
     useEffect(() => {
         const fetchItems = async () => {
             try {
-                const res = await axios.get('http://localhost:5000/menu-items');
+                const res = await axios.get('http://localhost:5000/menu-items?archived=false');
                 setItems(res.data);
             } catch (err) {
                 console.error('Failed to fetch menu items', err);

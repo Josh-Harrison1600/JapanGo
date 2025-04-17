@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import MenuList from '../components/MenuList';
 
 //Archive component to display and manage archived items
-function Archive({ deletedItems, onRestore}: {
+function Archive({}: {
     deletedItems: any[];
     onRestore: (id: string) => void;
     refreshItems: () => void;
@@ -12,7 +13,7 @@ function Archive({ deletedItems, onRestore}: {
     //Fetch archived menu items
     const fetchItems = async () => {
         try{
-            const res = await axios.get(`http://localhost:5000/menu-items/archive/${id}`);
+            const res = await axios.get(`http://localhost:5000/menu-items?archived=true`);
             setMenuItems(res.data);
         }catch(err){
             console.error('Failed to fetch menu items', err);
@@ -38,11 +39,7 @@ function Archive({ deletedItems, onRestore}: {
     return (
       <div>
         <div className="p-6">
-          <MenuList items={menuItems} onDelete={handleDelete} refreshItems={fetchItems}/>
-          <AddMenuItem refreshItems={fetchItems} />
-          <ImageUploader onUploadComplete={(url) => {
-            console.log('Image uploaded to:', url);
-          }} />
+          <MenuList items={menuItems} onArchive={handleDelete} refreshItems={fetchItems}/>
         </div>
       </div>
     ); 

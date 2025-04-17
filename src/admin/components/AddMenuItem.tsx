@@ -44,7 +44,8 @@ function AddMenuItem({ refreshItems }: AddMenuItemProps) {
         price: parseFloat(price),
         description,
         imageUrl,
-        extraInfo
+        extraInfo,
+        archived: false,
       });
 
       toast.success('Item Added Successfully!');
