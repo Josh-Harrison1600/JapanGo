@@ -37,11 +37,18 @@ function AddMenuItem({ refreshItems }: AddMenuItemProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    //Price validation so the user cant enter strings
+    const validPrice = /^\d+(\.\d{1,2})?(-\d+(\.\d{1,2})?)?$/;
+    if (!validPrice.test(price)) {
+      toast.error('Invalid price format. Ex: 12.25 - 24.55.');
+      return;
+    }
+
     try {
       await axios.post('http://localhost:5000/menu-items', {
         name,
         category,
-        price: parseFloat(price),
+        price,
         description,
         imageUrl,
         extraInfo,
@@ -112,7 +119,7 @@ function AddMenuItem({ refreshItems }: AddMenuItemProps) {
 
 
       <input
-        type="number"
+        type="text"
         placeholder="Price"
         className="border px-3 py-2 w-full"
         value={price}

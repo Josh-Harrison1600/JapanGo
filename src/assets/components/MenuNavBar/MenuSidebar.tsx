@@ -10,7 +10,7 @@ function MenuSidebar() {
           <li key={category}>
             <a
               href={`#${category.toLowerCase().replace(/[^a-z0-9]/gi, "-")}`}
-              className="block px-3 py-2 rounded hover:bg-red-100 transition duration-200 font-medium text-gray-800"
+              className="block px-3 py-2 rounded hover:bg-red-500 hover:text-white transition-all duration-300 font-medium text-gray-800"
             >
               {category}
             </a>

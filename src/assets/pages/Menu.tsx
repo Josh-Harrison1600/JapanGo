@@ -15,7 +15,7 @@ interface MenuItem {
     _id: string;
     name: string;
     category: string;
-    price: number;
+    price: string;
     description?: string;
     imageUrl?: string;
     extraInfo?: string;
@@ -98,7 +98,7 @@ function Menu(){
                                         rel="noopener noreferrer"
                                         className="cursor-pointer"
                                     >
-                                        <div className="bg-gray-100 hover:bg-gray-300 transition-colors duration-300 border-2 border-gray-100 shadow-xl rounded-lg overflow-hidden p-4 flex flex-col items-center text-center space-y-2 h-[430px] max-w-[450px]">
+                                        <div className="bg-gray-100 hover:bg-gray-300 transition-colors duration-300 border-2 border-gray-100 shadow-xl rounded-none overflow-hidden p-4 flex flex-col items-center text-center space-y-2 h-[430px] max-w-[450px]">
                                             {/* Image */}
                                             {item.imageUrl && (
                                                 <img
@@ -112,7 +112,7 @@ function Menu(){
                                             <p className="text-lg font-semibold">{item.name}</p>
 
                                             {/* Price */}
-                                            <p className="text-sm font-semibold">${item.price.toFixed(2)}</p>
+                                            <p className="text-sm font-semibold">${item.price}</p>
 
                                             {/* Description */}
                                             {item.description && (
@@ -145,7 +145,7 @@ function Menu(){
                 {/* Modal Body */}
                 <DialogContent dividers className="space-y-4">
                     {/* Price */}
-                    <p className="text-lg font-semibold">Price: ${selectedItem?.price.toFixed(2)}</p>
+                    <p className="text-lg font-semibold">Price: ${selectedItem?.price}</p>
 
                     {/* Description */}
                     <p className="text-gray-700">{selectedItem?.description}</p>
