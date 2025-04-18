@@ -8,6 +8,7 @@ import routes from './routes/menuRoutes';
 import hoursRoute from './routes/hoursRoute';
 import uploadRoute from './routes/uploadRoute';
 import authRoute from './routes/authRoute';
+import analyticsRoute from './routes/AnalyticsRoute';
 import { SitemapStream, streamToPromise } from 'sitemap';
 import { Readable } from 'stream';
 import cookieParser from 'cookie-parser';
@@ -32,6 +33,7 @@ app.use('/menu-items', routes);
 app.use('/hours', hoursRoute);
 app.use('/upload-image', uploadRoute);
 app.use('/auth', authRoute);
+app.use('/analytics', analyticsRoute); 
 
 // Base route
 app.get('/', (req, res) => {
