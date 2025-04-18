@@ -4,7 +4,7 @@ import axios from 'axios';
 import { FaFacebook, FaInstagram } from 'react-icons/fa';
 
 interface HoursType {
-    [day: string]: string;
+    [day: string]: string[];
 }
 
 function Footer(){
@@ -46,7 +46,7 @@ function Footer(){
                             {hours ? (
                                 daysOfWeek.map((day) => (
                                     <p key={day}>
-                                        {day.charAt(0).toUpperCase() + day.slice(1)} | {hours[day]}
+                                        {day.charAt(0).toUpperCase() + day.slice(1)} | {hours[day].join(" |  ")}
                                     </p>
                                 ))
                             ) : (
