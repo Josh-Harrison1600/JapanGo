@@ -2,8 +2,11 @@ import { motion } from 'framer-motion';
 import doorDashLogo from '../images/doorDashLogo.png';
 import skipTheDishesLogo from '../images/skipTheDishesLogo.png';
 import uberEatsLogo from '../images/uberEatsLogo.png';
+import { useEffect, useState } from 'react';
 
 function OrderNow() {
+  const [imagesLoaded, setImagesLoaded] = useState(false);
+
     const deliveryOptions = [
       {
         name: "DoorDash",
@@ -21,6 +24,37 @@ function OrderNow() {
         url: "https://www.ubereats.com/ca/store/japan-go-main-st/_nwqhTcTVkOrXTJ58HhIZA",
       },
     ];
+
+    //make sure all images are loaded before displaying the page
+    useEffect(() => {
+      let loadedCount = 0;
+
+      deliveryOptions.forEach((option) => {
+        const img = new Image();
+        img.src = option.logo;
+        img.onload = () => {
+          loadedCount++;
+          if (loadedCount === deliveryOptions.length) {
+            setImagesLoaded(true);
+          }
+        };
+        img.onerror = () => {
+          console.error(`Error loading image: ${option.logo}`);
+          loadedCount++;
+          if(loadedCount === deliveryOptions.length) {
+            setImagesLoaded(true);
+          }
+        }
+      })
+    }, [])
+
+    if(!imagesLoaded){
+      return(
+        <div className='min-h-screen flex items-center justify-center bg-gray-100'>
+          <p className='text-black text-3xl font-bold'>Loading...</p>
+        </div>
+      )
+    }
 
 return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 px-4 pt-16">

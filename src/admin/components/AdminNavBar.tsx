@@ -7,8 +7,20 @@ import FastfoodIcon from '@mui/icons-material/Fastfood';
 import WatchLaterIcon from '@mui/icons-material/WatchLater';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import HistoryIcon from '@mui/icons-material/History';
+import { useLocation } from 'react-router-dom';
 
 function AdminNavBar() {
+
+    const location = useLocation();
+    
+    //for showing the titles on the navbar
+    const getTitle = () => {
+        const path = location.pathname;
+        if(path.includes('/admin/dashboard')) return 'Dashboard';
+        if(path.includes('/admin/menu')) return 'Menu Dashboard';
+        if(path.includes('/admin/hours')) return 'Hours Dashboard';
+        if(path.includes('/admin/archive')) return 'Archive Dashboard';
+    }
     //State to control sidebar opening and closing
     const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -37,14 +49,20 @@ function AdminNavBar() {
 
     return(
         <>
-            <nav className='bg-black text-white flex justify-between items-center px-6 py-4'>
+            <nav className="bg-black text-white relative flex items-center px-6 py-4">
                 {/* Hamburger Icon */}
                 <MenuIcon 
-                    className='text-white cursor-pointer hover:text-red-400 '
+                    className="text-white cursor-pointer hover:text-red-400"
                     fontSize="large"
                     onClick={() => setSidebarOpen(true)}
-                    />
+                />
+
+                {/* Centered Title */}
+                <h2 className="absolute left-1/2 transform -translate-x-1/2 text-2xl font-bold text-center">
+                    {getTitle()}
+                </h2>
             </nav>
+
 
             {/* Sidebar Container */}
             <div

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import MenuList from '../components/MenuList';
+import { toast } from 'react-toastify';
 
 //Archive component to display and manage archived items
 function Archive({}: {
@@ -36,10 +37,21 @@ function Archive({}: {
     };
     
 
+    //Function for restoring an item
+    const handleRestore = async (id: string) => {
+        try{
+            await axios.put(`http://localhost:5000/menu-items/restore/${id}`);
+            await fetchItems();
+          } catch (err) {
+            console.error('Error restoring item', err);
+            toast.error('Failed to restore item');
+          }
+        };
+
     return (
       <div>
         <div className="p-6">
-          <MenuList items={menuItems} onArchive={handleDelete} refreshItems={fetchItems} isArchiveView={true} />
+          <MenuList items={menuItems} onArchive={handleDelete} refreshItems={fetchItems} isArchiveView={true} onRestore={handleRestore}/>
         </div>
       </div>
     ); 

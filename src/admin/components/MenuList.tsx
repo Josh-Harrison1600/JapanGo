@@ -6,6 +6,7 @@ import { Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, Tab
 import EditIcon from '@mui/icons-material/Edit';
 import ArchiveIcon from '@mui/icons-material/Archive';
 import DeleteIcon from '@mui/icons-material/Delete';
+import RestoreFromTrashIcon from '@mui/icons-material/RestoreFromTrash';
 
 //Categories for edit modal
 const categories = [
@@ -23,12 +24,14 @@ const categories = [
 ];
 
 
-function MenuList({ items, onArchive, refreshItems, isArchiveView = false }: { items: any[]; onArchive: (id: string) => void; refreshItems: () => void; isArchiveView?: boolean;}) {
+function MenuList({ items, onArchive, refreshItems, isArchiveView = false, onRestore}: { items: any[]; onArchive: (id: string) => void; refreshItems: () => void; isArchiveView?: boolean; onRestore?: (id: string) => void; }) {
   const [deleteTarget, setDeleteTarget] = useState<{ id: string, name: string } | null>(null);
   const [confirmName, setConfirmName] = useState('');
   const [editTarget, setEditTarget] = useState<any | null>(null);
   const [editForm, setEditForm] = useState({ name: '', category: [] as string[], price: '', description: '', imageUrl: '' });
   const [selected, setSelected] = useState<string[]>([]);
+  const [restoreTarget, setRestoreTarget] = useState<{ id: string, name: string } | null>(null);
+  const [confirmRestoreName, setConfirmRestoreName] = useState('');
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [orderDirection, setOrderDirection] = useState<'asc' | 'desc'>('asc');
@@ -235,9 +238,18 @@ function MenuList({ items, onArchive, refreshItems, isArchiveView = false }: { i
                     <TableCell>{row.description}</TableCell>
                     <TableCell>{row.imageUrl}</TableCell>
                     <TableCell align="center">
-                      <IconButton onClick={() => openEditModal(row)}>
-                        <EditIcon color="primary" />
-                      </IconButton>
+                      <Tooltip title="Edit">
+                        <IconButton onClick={() => openEditModal(row)}>
+                          <EditIcon color="primary" />
+                        </IconButton>
+                      </Tooltip>
+                      {isArchiveView && onRestore && (
+                        <Tooltip title="Restore">
+                          <IconButton onClick={() => setRestoreTarget({ id: row._id, name: row.name})}>
+                            <RestoreFromTrashIcon color="primary" />
+                          </IconButton>
+                        </Tooltip>
+                      )}
                     </TableCell>
                   </TableRow>
                 );
@@ -287,6 +299,45 @@ function MenuList({ items, onArchive, refreshItems, isArchiveView = false }: { i
           </Box>
         </Box>
       </Modal>
+
+      {/* Restore Confirmation Modal */}
+      <Modal open={!!restoreTarget} onClose={() => { setRestoreTarget(null); setConfirmRestoreName(''); }}>
+        <Box sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', bgcolor: 'background.paper', p: 4, boxShadow: 24, width: 400 }}>
+          <Typography variant="h6">You are about to restore this item!</Typography>
+          <Typography>
+            Type <strong>{restoreTarget?.name}</strong> to confirm restore:
+          </Typography>
+          <TextField
+            fullWidth
+            variant="outlined"
+            margin="normal"
+            value={confirmRestoreName}
+            onChange={(e) => setConfirmRestoreName(e.target.value)}
+          />
+          <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 1 }}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => {
+                if (confirmRestoreName === restoreTarget?.name && onRestore) {
+                  onRestore(restoreTarget.id);
+                  setRestoreTarget(null);
+                  setConfirmRestoreName('');
+                  toast.success('Item restored!');
+                } else {
+                  toast.error('Name does not match!');
+                }
+              }}
+            >
+              Confirm
+            </Button>
+            <Button onClick={() => { setRestoreTarget(null); setConfirmRestoreName(''); }}>
+              Cancel
+            </Button>
+          </Box>
+        </Box>
+      </Modal>
+
 
       {/* Edit Modal */}
       <Modal open={!!editTarget} onClose={() => setEditTarget(null)}>

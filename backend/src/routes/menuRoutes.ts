@@ -46,7 +46,7 @@ router.put('/archive/:id', async (req, res) => {
 
 
 //Restore
-router.put('/menu-items/restore/:id', async (req, res) => {
+router.put('/restore/:id', async (req, res) => {
     try{
         const item = await MenuItem.findByIdAndUpdate(req.params.id, { archived: false }, { new: true});
         if(!item){
